@@ -49,10 +49,10 @@ txt <- paste0(names(tab), '\n', precentages, '%') # text on chart
 pie(tab, labels=txt) # plot pie chart
 
 
-#Popular genres 
+# Popular genres 
 dataset$Genre %>% table() %>% barplot() 
 
-#coloring barplot 
+# coloring barplot 
 tab<-dataset$Genre %>% table() 
 
 precentages<-tab %>% prop.table() %>% round(3)*100 
@@ -63,35 +63,31 @@ bb <- dataset$Genre %>% table() %>% barplot(axisnames=F,main='Genre',ylab='count
 
 text(bb,tab/2,labels=txt,cex=1.5) 
 
-#boxlpt for NA_Sales
+# boxlpt for NA_Sales
 boxplot(dataset$NA_Sales)
 
-#boxlpt for EU_Sales
+# boxlpt for EU_Sales
 boxplot(dataset$EU_Sales)
 
-#boxlpt for JP_Sales
+# boxlpt for JP_Sales
 boxplot(dataset$JP_Sales)
 
-#boxlpt for Other_Sales
+# boxlpt for Other_Sales
 boxplot(dataset$Other_Sales) 
 
-#boxlpt for Global_Sales
+# boxlpt for Global_Sales
 boxplot(dataset$Global_Sales)
 
-#boxPlots for genre and Global_Sales
+# boxPlots for genre and Global_Sales
 qplot(data = dataset, x=Global_Sales,y=Genre,fill=I("yellow"),width=0.5 ,geom = "boxplot")
 
-#barplot for year
+# barplot for year
 dataset$Year %>% table() %>% barplot()
 
 
----
-title: "R Notebook"
-output: html_notebook
----
 
 
-Description:
+# Description:
 
 This dataset  has 15 attributes and 1730 objects and along with each game title we will have a rank based on the game category and the total number of user ratings and the price of the game.
 It shows the user installs numbers and the growth for 30 and 60 days 
@@ -99,14 +95,14 @@ and it provides a valuable resource for exploring the popularity of gaming and g
 It enables us to analyze the platforms that are influencing worldwide sales, 
 and gives us a variety of 100 game for each game category.
 
-Goal:
+# Goal:
 
 Our goal  from studying this dataset is to utilize classification and clustering techniques on the input data to make predictions about the popularity of upcoming games.
 
 Dataset link: https://www.kaggle.com/datasets/thedevastator/global-video-game-sales 
 
 
-Attributes discerption: 
+# Attributes discerption: 
 
 Rank (Nominal): Ranking of the game based on the category.
 
@@ -136,7 +132,7 @@ growth(60)(numeric, ratio): percent growth in 60 days.
 
 growth(30)(numeric,ratio): percent growth in 30 days.
 
-Class label:
+# Class label:
 
 We want to predict the popularity of upcoming games based on the category and total ratings.
 
