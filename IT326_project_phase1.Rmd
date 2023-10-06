@@ -64,6 +64,8 @@ boxplot(dataset$JP_Sales)
 #boxPlots for genre and Global_Sales
 qplot(data = dataset, x=Global_Sales,y=Genre,fill=I("yellow"),width=0.5 ,geom = "boxplot")
 
+#barplot for year
+dataset$Year %>% table() %>% barplot()
 
 
 ---
