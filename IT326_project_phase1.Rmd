@@ -52,7 +52,14 @@ bb <- dataset$Genre %>% table() %>% barplot(axisnames=F,main='Genre',ylab='count
 
 text(bb,tab/2,labels=txt,cex=1.5) 
 
+#boxlpt for NA_Sales
+boxplot(dataset$NA_Sales)
 
+#boxlpt for EU_Sales
+boxplot(dataset$EU_Sales)
+
+#boxlpt for JP_Sales
+boxplot(dataset$JP_Sales)
 
 
 ---
