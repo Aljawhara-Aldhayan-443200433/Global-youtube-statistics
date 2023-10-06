@@ -72,6 +72,9 @@ var(dataset$JP_Sales)
 var(dataset$Other_Sales)
 var(dataset$Global_Sales)
 
+#Encoding categorical data (Genre)
+dataset$Genre=factor(dataset$Genre,levels=c("Action","Adventure","Fighting","Platform","Puzzle","Racing","Role-Playing","Shooter","Simulation","Sports","Strategy","Misc"),labels=c(1,2,3,4,5,6,7,8,9,10,11,12))
+
 # platform pie chart
 
 dataset2 <- dataset %>% sample_n(50)
@@ -118,6 +121,8 @@ qplot(data = dataset, x=Global_Sales,y=Genre,fill=I("yellow"),width=0.5 ,geom = 
 # barplot for year
 dataset$Year %>% table() %>% barplot()
 
-
+# A matrix of sales Scatter plots
+pairs(~NA_Sales + EU_Sales + JP_Sales + Other_Sales + Global_Sales, data = dataset,
+      main = "Sales Scatterplot")
 
 
