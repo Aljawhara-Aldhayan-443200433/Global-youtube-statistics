@@ -1,8 +1,8 @@
 
 
-#import dataset
+# import dataset
 dataset=read.csv("vgsales.csv")
-#libraries
+# libraries
 library(outliers) 
 library(dplyr)
 library(Hmisc)
@@ -15,30 +15,30 @@ library(DataExplorer)
 library(randomForest)
 options(max.print=9999999)
 
-#dataset info
+# dataset info
 dim(dataset)
 names(dataset)
 
-#dataset structure
+# dataset structure
 str(dataset)
 
-#sample of raw dataset(first 10 rows)
+# sample of raw dataset(first 10 rows)
 head(dataset, 10)
 
-#sample of raw dataset(last 10 rows)
+# sample of raw dataset(last 10 rows)
 tail(dataset, 10)
 
-#summary of dataset
+# summary of dataset
 summary(dataset)
 
-#variance of numeric data
+# variance of numeric data
 var(dataset$NA_Sales)
 var(dataset$EU_Sales)
 var(dataset$JP_Sales)
 var(dataset$Other_Sales)
 var(dataset$Global_Sales)
 
-#platform pie chart
+# platform pie chart
 
 dataset2 <- dataset %>% sample_n(50)
 dataset2$Platform %>% table() %>% pie() # plot pie chart without percentages
