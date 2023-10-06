@@ -1,7 +1,41 @@
 
+# Description:
+
+This dataset, obtained from vgchartz.com, provides a valuable resource for exploring the dynamics between gaming platforms and genres in the top 100 global video games. It enables us to analyze the platforms that are influencing worldwide sales, identify the most prosperous genres in various global regions, and track the evolving trends in both platform preference and genre popularity over time. 
+
+
+
+# Goal:
+
+Our goal  from studying this dataset is to utilize classification and clustering techniques on the input data to make predictions about the popularity of upcoming games.
+
+
+
+
+# Attributes discerption:
+
+this dataset has 11 attributes and 16599 objects.
+
+Rank: Ranking of the game based on global sales. 
+Name: Name of the game. 
+Platform: Platform the game was released on. 
+Year: Year the game was released. 
+Genre: Genre of the game.
+Publisher: Publisher of the game. 
+NA_Sales: Sales of the game in North America. 
+EU_Sales: Sales of the game in Europe. 
+JP_Sales: Sales of the game in Japan. 
+Other_Sales: Sales of the game in other regions. 
+Global_Sales: Total sales of the game worldwide.
+
+
+# Class label:
+Our class label is “Popular”: it predicts whether a game will sell 1000000 or more globally (regression).
+
 
 # import dataset
 dataset=read.csv("vgsales.csv")
+
 # libraries
 library(outliers) 
 library(dplyr)
@@ -87,57 +121,3 @@ dataset$Year %>% table() %>% barplot()
 
 
 
-# Description:
-
-This dataset  has 15 attributes and 1730 objects and along with each game title we will have a rank based on the game category and the total number of user ratings and the price of the game.
-It shows the user installs numbers and the growth for 30 and 60 days 
-and it provides a valuable resource for exploring the popularity of gaming and genres the top video games in android industry.
-It enables us to analyze the platforms that are influencing worldwide sales, 
-and gives us a variety of 100 game for each game category.
-
-# Goal:
-
-Our goal  from studying this dataset is to utilize classification and clustering techniques on the input data to make predictions about the popularity of upcoming games.
-
-Dataset link: https://www.kaggle.com/datasets/thedevastator/global-video-game-sales 
-
-
-# Attributes discerption: 
-
-Rank (Nominal): Ranking of the game based on the category.
-
-Title (Nominal): The title of the game.
-
-Total ratings (Numeric, Ratio-scaled): The total of ratings received.
-
-Installs (Numeric, Ratio-scaled) : Estimated milestone for installation.
-
-Average rating : average of a 5-star rating
-
-4 star rating (Numeric, interval): total number of 4 star ratings.
-
-3 star rating (Numeric, interval): total number of 3 star .
-2 star rating (Numeric, interval): total number of 2 star rating.
-1 star rating (Numeric, interval) : total number of 1 star rating.
-Paid (Binary): does the game require payment? (False:No, True:Yes)
-
-5 Star rating (Numeric,interval):Number of 5star rating.
-
-category (Nominal):Game Category.
-
-price(Numeric, ratio):Game's price in the dollar.
-
-
-growth(60)(numeric, ratio): percent growth in 60 days.
-
-growth(30)(numeric,ratio): percent growth in 30 days.
-
-# Class label:
-
-We want to predict the popularity of upcoming games based on the category and total ratings.
-
-Dataset<-read.csv("android-games.csv")
-options(max.print=9999999)
-View(Dataset)
-print(Dataset)
-str(Dataset)
