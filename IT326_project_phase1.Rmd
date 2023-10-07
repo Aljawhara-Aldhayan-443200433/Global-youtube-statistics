@@ -30,10 +30,12 @@ Global_Sales: Total sales of the game worldwide.
 
 
 # Class label:
+
 Our class label is “Popular”: it predicts whether a game will sell 1000000 or more globally (regression).
 
 
 # import dataset
+
 dataset=read.csv("vgsales.csv")
 
 # libraries
@@ -96,6 +98,8 @@ txt<-paste0(names(tab), '\n',precentages,'%')
 bb <- dataset$Genre %>% table() %>% barplot(axisnames=F,main='Genre',ylab='count',col=c('pink','blue','lightblue','green','lightgreen','red','orange','red','grey','yellow','azure','olivedrab')) 
 
 text(bb,tab/2,labels=txt,cex=1.5) 
+
+# In terms of genre, action games are the most popular, followed by sports and music games. It is safe to assume that a high number of genres of this nature exist due to their popularity and sales.
 
 # boxPlot for NA_Sales
 boxplot(dataset$NA_Sales)
