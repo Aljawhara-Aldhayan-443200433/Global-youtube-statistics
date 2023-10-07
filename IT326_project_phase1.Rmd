@@ -35,7 +35,6 @@ Our class label is “Popular”: it predicts whether a game will sell 1000000 o
 
 
 # import dataset
-
 dataset=read.csv("vgsales.csv")
 
 # libraries
@@ -190,7 +189,6 @@ roc_imp <- data.frame(cbind(variable = rownames(roc_imp), score = roc_imp[,1]))
 roc_imp$score <- as.double(roc_imp$score)
 roc_imp[order(roc_imp$score,decreasing = TRUE),]
 
-View(dataset)
 # we will rmove the (JP_Sales) because it is of low importance to our class_label(Global_Sales)
 dataset<- dataset[,-9]
 
