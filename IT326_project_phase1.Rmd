@@ -30,6 +30,7 @@ Global_Sales: Total sales of the game worldwide.
 
 
 # Class label:
+
 Our class label is “Popular”: it predicts whether a game will sell 1000000 or more globally (regression).
 
 
@@ -86,7 +87,7 @@ pie(tab, labels=txt) # plot pie chart
 # Popular genres 
 dataset$Genre %>% table() %>% barplot() 
 
-# coloring barplot 
+# coloring barplot and adding text
 tab<-dataset$Genre %>% table() 
 
 precentages<-tab %>% prop.table() %>% round(3)*100 
@@ -97,19 +98,21 @@ bb <- dataset$Genre %>% table() %>% barplot(axisnames=F,main='Genre',ylab='count
 
 text(bb,tab/2,labels=txt,cex=1.5) 
 
-# boxlpt for NA_Sales
+# In terms of genre, action games are the most popular, followed by sports and music games. It is safe to assume that a high number of genres of this nature exist due to their popularity and sales.
+
+# boxPlot for NA_Sales
 boxplot(dataset$NA_Sales)
 
-# boxlpt for EU_Sales
+# boxPlot for EU_Sales
 boxplot(dataset$EU_Sales)
 
-# boxlpt for JP_Sales
+# boxPlot for JP_Sales
 boxplot(dataset$JP_Sales)
 
-# boxlpt for Other_Sales
+# boxPlot for Other_Sales
 boxplot(dataset$Other_Sales) 
 
-# boxlpt for Global_Sales
+# boxPlot for Global_Sales
 boxplot(dataset$Global_Sales)
 
 # boxPlots for genre and Global_Sales
@@ -126,8 +129,95 @@ pairs(~NA_Sales + EU_Sales + JP_Sales + Other_Sales + Global_Sales, data = datas
  
  
       
-# Pre - processing 
+# Pre - processing
+
+# Rank should be char and not numeric,because we will use them as ordinal data.
+dataset$Rank=as.character(dataset$Rank)
+
+# checking for nulls in name (there is no nulls)
+sum(is.na(dataset$Name))
+NullName<-dataset[dataset$Name=="N/A",]
+NullName
+# checking for nulls in Platform
+sum(is.na(dataset$Platform))
+NullPlatform<-dataset[dataset$Platform=="N/A",]
+
+# Encoding categorical data for platform
+dataset$Platform=factor(dataset$Platform,levels=c("2600","3DO","3DS","DC","DS","GB","GBA","GC","GEN","GG","N64","NES","NG","PC","PCFX","PS","PS2","PS3","PS4","PSP","PSV","SAT","SCD","SNES","TG16","Wii","WiiU","WS","X360","XB","XOne"), labels=c(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31))
+
+# checking for nulls in year
+sum(is.na(dataset$year))
+NullYear<-dataset[dataset$Year=="N/A",]
+NullYear
+# we won't delete the null and we will leave them as global constant as it is because we want the sales data of them.
+
 # Encoding categorical data (Genre)
 dataset$Genre=factor(dataset$Genre,levels=c("Action","Adventure","Fighting","Platform","Puzzle","Racing","Role-Playing","Shooter","Simulation","Sports","Strategy","Misc"),labels=c(1,2,3,4,5,6,7,8,9,10,11,12))
+
+# checking for nulls in Genre(there is no nulls)
+sum(is.na(dataset$Genre))
+NullGenre<-dataset[dataset$Genre=="N/A",]
+NullGenre
+
+# checking for nulls in Publisher(there is no nulls)
+sum(is.na(dataset$Publisher))
+NullPublisher<-dataset[dataset$Publisher=="N/A",]
+NullPublisher
+# we won't delete the null and we will leave them as global constant as it is because we want the sales data of them.
+
+# dataset before normalization
+datsetWithoutNormalization<-dataset
+
+# Z_normalization
+Z_normalize <- function(x) {return ((x - mean(x)) / sd(x))} 
+dataset$NA_Sales<-Z_normalize(datsetWithoutNormalization$NA_Sales) 
+dataset$EU_Sales<-Z_normalize(datsetWithoutNormalization$EU_Sales) 
+dataset$JP_Sales<-Z_normalize(datsetWithoutNormalization$JP_Sales) 
+dataset$Other_Sales<-Z_normalize(datsetWithoutNormalization$Other_Sales) 
+dataset$Global_Sales<-Z_normalize(datsetWithoutNormalization$Global_Sales)
+
+# min-max normalization
+normalize <- function(x) {return ((x - min(x)) / (max(x) - min(x)))}
+dataset$NA_Sales<-normalize(datsetWithoutNormalization$NA_Sales)
+dataset$EU_Sales<-normalize(datsetWithoutNormalization$EU_Sales)
+dataset$JP_Sales<-normalize(datsetWithoutNormalization$JP_Sales)
+dataset$Other_Sales<-normalize(datsetWithoutNormalization$Other_Sales)
+dataset$Global_Sales<-normalize(datsetWithoutNormalization$Global_Sales)
+# we will use the min-max normalization; it's better for visualization.
+
+# use roc_curve area as score
+roc_imp <- filterVarImp(x = dataset[,7:10], y = dataset$Global_Sales)
+# sort the score in decreasing order
+roc_imp <- data.frame(cbind(variable = rownames(roc_imp), score = roc_imp[,1]))
+roc_imp$score <- as.double(roc_imp$score)
+roc_imp[order(roc_imp$score,decreasing = TRUE),]
+
+# we will rmove the (JP_Sales) because it is of low importance to our class_label(Global_Sales)
+dataset<- dataset[,-9]
+
+
+#outlier of NA_Sales
+OutNA_Sales = outlier(dataset$NA_Sales, logical =TRUE)
+sum(OutNA_Sales)
+Find_outlier = which(OutNA_Sales ==TRUE, arr.ind = TRUE)
+OutNA_Sales
+Find_outlier
+#outlier of EU_Sales
+OutEU_Sales = outlier(dataset$EU_Sales, logical =TRUE)
+sum(OutEU_Sales)
+Find_outlier = which(OutEU_Sales ==TRUE, arr.ind = TRUE)
+OutEU_Sales
+Find_outlier
+#outlier of JP_Sales
+OutJP_Sales = outlier(dataset$JP_Sales, logical =TRUE)
+sum(OutJP_Sales)
+Find_outlier = which(OutJP_Sales ==TRUE, arr.ind = TRUE)
+OutJP_Sales
+Find_outlier
+
+#remove outliers 
+dataset= dataset[-Find_outlier,]
+
+
 
 
