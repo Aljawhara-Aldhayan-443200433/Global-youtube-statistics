@@ -121,6 +121,9 @@ dataset$Year %>% table() %>% barplot()
 # A matrix of sales Scatter plots
 pairs(~NA_Sales + EU_Sales + JP_Sales + Other_Sales + Global_Sales, data = dataset,
       main = "Sales Scatterplot")
+      
+# We used Scatterplot to determine the type of correlation we have between the sales; we can see that the majority have positive correlation with each other. 
+ 
  
       
 # Pre - processing 
