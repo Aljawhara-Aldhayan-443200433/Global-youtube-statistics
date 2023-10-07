@@ -193,4 +193,28 @@ roc_imp[order(roc_imp$score,decreasing = TRUE),]
 dataset<- dataset[,-9]
 
 
+#outlier of NA_Sales
+OutNA_Sales = outlier(dataset$NA_Sales, logical =TRUE)
+sum(OutNA_Sales)
+Find_outlier = which(OutNA_Sales ==TRUE, arr.ind = TRUE)
+OutNA_Sales
+Find_outlier
+#outlier of EU_Sales
+OutEU_Sales = outlier(dataset$EU_Sales, logical =TRUE)
+sum(OutEU_Sales)
+Find_outlier = which(OutEU_Sales ==TRUE, arr.ind = TRUE)
+OutEU_Sales
+Find_outlier
+#outlier of JP_Sales
+OutJP_Sales = outlier(dataset$JP_Sales, logical =TRUE)
+sum(OutJP_Sales)
+Find_outlier = which(OutJP_Sales ==TRUE, arr.ind = TRUE)
+OutJP_Sales
+Find_outlier
+
+#remove outliers 
+dataset= dataset[-Find_outlier,]
+
+
+
 
