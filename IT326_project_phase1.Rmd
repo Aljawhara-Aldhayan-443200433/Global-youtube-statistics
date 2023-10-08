@@ -82,7 +82,8 @@ tab <- dataset2$Platform %>% table()
 precentages <- tab %>% prop.table() %>% round(3) * 100 
 txt <- paste0(names(tab), '\n', precentages, '%') # text on chart
 pie(tab, labels=txt) # plot pie chart
-
+# We notice from the pie chart of platform attribute that releasing a game for PS users will increase the popularity of the game since it is the most common platform among gamers. 
+ 
 
 # Popular genres 
 dataset$Genre %>% table() %>% barplot() 
@@ -100,6 +101,9 @@ text(bb,tab/2,labels=txt,cex=1.5)
 
 # In terms of genre, action games are the most popular, followed by sports and music games. It is safe to assume that a high number of genres of this nature exist due to their popularity and sales.
 
+
+
+
 # boxPlot for NA_Sales
 boxplot(dataset$NA_Sales)
 
@@ -112,8 +116,12 @@ boxplot(dataset$JP_Sales)
 # boxPlot for Other_Sales
 boxplot(dataset$Other_Sales) 
 
+# The boxplot of the Other-sales attribute indicate that the values are close to each other ,and there is a lot of outliers since the dataset represents the global sales of video games. 
+ 
+
 # boxPlot for Global_Sales
 boxplot(dataset$Global_Sales)
+# The boxplot of the Global-sales attribute indicate that the values are close to each other ,and there is a lot of outliers since the dataset represents the global sales of video games. 
 
 # boxPlots for genre and Global_Sales
 qplot(data = dataset, x=Global_Sales,y=Genre,fill=I("yellow"),width=0.5 ,geom = "boxplot")
@@ -130,6 +138,7 @@ pairs(~NA_Sales + EU_Sales + JP_Sales + Other_Sales + Global_Sales, data = datas
  
       
 # Pre - processing
+
 
 # Rank should be char and not numeric,because we will use them as ordinal data.
 dataset$Rank=as.character(dataset$Rank)
@@ -183,6 +192,7 @@ dataset$EU_Sales<-normalize(datsetWithoutNormalization$EU_Sales)
 dataset$JP_Sales<-normalize(datsetWithoutNormalization$JP_Sales)
 dataset$Other_Sales<-normalize(datsetWithoutNormalization$Other_Sales)
 dataset$Global_Sales<-normalize(datsetWithoutNormalization$Global_Sales)
+
 # we will use the min-max normalization; it's better for visualization.
 
 # use roc_curve area as score
@@ -196,18 +206,35 @@ roc_imp[order(roc_imp$score,decreasing = TRUE),]
 dataset<- dataset[,-9]
 
 
+#outlier of other_sales 
+  
+OutOS=outlier(dataset$Other_Sales, logical=TRUE)  
+sum(OutOS)  
+Find_outlier=which(OutOS==TRUE, arr.ind=TRUE)  
+OutOS 
+Find_outlier 
+
+#outlier of Global_sales 
+OutGS=outlier(dataset$Global_Sales, logical=TRUE)  
+sum(OutGS)  
+Find_outlier=which(OutGS==TRUE, arr.ind=TRUE)  
+OutGS 
+Find_outlier 
+
 #outlier of NA_Sales
 OutNA_Sales = outlier(dataset$NA_Sales, logical =TRUE)
 sum(OutNA_Sales)
 Find_outlier = which(OutNA_Sales ==TRUE, arr.ind = TRUE)
 OutNA_Sales
 Find_outlier
+
 #outlier of EU_Sales
 OutEU_Sales = outlier(dataset$EU_Sales, logical =TRUE)
 sum(OutEU_Sales)
 Find_outlier = which(OutEU_Sales ==TRUE, arr.ind = TRUE)
 OutEU_Sales
 Find_outlier
+
 #outlier of JP_Sales
 OutJP_Sales = outlier(dataset$JP_Sales, logical =TRUE)
 sum(OutJP_Sales)
