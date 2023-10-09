@@ -1,5 +1,0 @@
-```R
-lidrary(dplyr)
-iris
-
-```
