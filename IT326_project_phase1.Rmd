@@ -92,13 +92,14 @@ var(dataset$Global_Sales)
 ```{r}
 dataset2 <- dataset %>% sample_n(50)
 tab <- dataset2$Platform %>% table()
-
 precentages <- tab %>% prop.table() %>% round(3) * 100 
 txt <- paste0(names(tab), '\n', precentages, '%') 
 
-pie(tab, labels=txt) 
+pie(tab, labels=txt , main = "Pie chart of Platform") 
+
 
 ```
+
 
 
 We notice from the pie chart of platform attribute that releasing a game for PS users will increase the popularity of the game since it is the most common platform among gamers. 
