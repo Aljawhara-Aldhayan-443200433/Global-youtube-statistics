@@ -226,40 +226,6 @@ NullPublisher
 ```{r}
 datsetWithoutNormalization<-dataset
 ```
-# Z_normalization
-```{r}
-Z_normalize <- function(x) {return ((x - mean(x)) / sd(x))} 
-dataset$NA_Sales<-Z_normalize(datsetWithoutNormalization$NA_Sales) 
-dataset$EU_Sales<-Z_normalize(datsetWithoutNormalization$EU_Sales) 
-dataset$JP_Sales<-Z_normalize(datsetWithoutNormalization$JP_Sales) 
-dataset$Other_Sales<-Z_normalize(datsetWithoutNormalization$Other_Sales) 
-dataset$Global_Sales<-Z_normalize(datsetWithoutNormalization$Global_Sales)
-```
-# min-max normalization
-```{r}
-normalize <- function(x) {return ((x - min(x)) / (max(x) - min(x)))}
-dataset$NA_Sales<-normalize(datsetWithoutNormalization$NA_Sales)
-dataset$EU_Sales<-normalize(datsetWithoutNormalization$EU_Sales)
-dataset$JP_Sales<-normalize(datsetWithoutNormalization$JP_Sales)
-dataset$Other_Sales<-normalize(datsetWithoutNormalization$Other_Sales)
-dataset$Global_Sales<-normalize(datsetWithoutNormalization$Global_Sales)
-```
-# we will use the min-max normalization; it's better for visualization.
-
-# use roc_curve area as score
-```{r}
-roc_imp <- filterVarImp(x = dataset[,7:10], y = dataset$Global_Sales)
-```
-# sort the score in decreasing order
-```{r}
-roc_imp <- data.frame(cbind(variable = rownames(roc_imp), score = roc_imp[,1]))
-roc_imp$score <- as.double(roc_imp$score)
-roc_imp[order(roc_imp$score,decreasing = TRUE),]
-```
-# we will rmove the (JP_Sales) because it is of low importance to our class_label(Global_Sales)
-```{r}
-dataset<- dataset[,-9]
-```
 
 
 
@@ -316,6 +282,41 @@ Find_outlier
 #remove outliers 
 ```{r}
 dataset= dataset[-Find_outlier,]
+```
+
+# Z_normalization
+```{r}
+Z_normalize <- function(x) {return ((x - mean(x)) / sd(x))} 
+dataset$NA_Sales<-Z_normalize(datsetWithoutNormalization$NA_Sales) 
+dataset$EU_Sales<-Z_normalize(datsetWithoutNormalization$EU_Sales) 
+dataset$JP_Sales<-Z_normalize(datsetWithoutNormalization$JP_Sales) 
+dataset$Other_Sales<-Z_normalize(datsetWithoutNormalization$Other_Sales) 
+dataset$Global_Sales<-Z_normalize(datsetWithoutNormalization$Global_Sales)
+```
+# min-max normalization
+```{r}
+normalize <- function(x) {return ((x - min(x)) / (max(x) - min(x)))}
+dataset$NA_Sales<-normalize(datsetWithoutNormalization$NA_Sales)
+dataset$EU_Sales<-normalize(datsetWithoutNormalization$EU_Sales)
+dataset$JP_Sales<-normalize(datsetWithoutNormalization$JP_Sales)
+dataset$Other_Sales<-normalize(datsetWithoutNormalization$Other_Sales)
+dataset$Global_Sales<-normalize(datsetWithoutNormalization$Global_Sales)
+```
+# we will use the min-max normalization; it's better for visualization.
+
+# use roc_curve area as score
+```{r}
+roc_imp <- filterVarImp(x = dataset[,7:10], y = dataset$Global_Sales)
+```
+# sort the score in decreasing order
+```{r}
+roc_imp <- data.frame(cbind(variable = rownames(roc_imp), score = roc_imp[,1]))
+roc_imp$score <- as.double(roc_imp$score)
+roc_imp[order(roc_imp$score,decreasing = TRUE),]
+```
+# we will rmove the (JP_Sales) because it is of low importance to our class_label(Global_Sales)
+```{r}
+dataset<- dataset[,-9]
 ```
 
 
