@@ -58,28 +58,33 @@ library(randomForest)
 options(max.print=9999999)
 ```
 
-# dataset info
+
 ```{r}
 dim(dataset)
 names(dataset)
 ```
-# dataset structure
+dataset info
+
 ```{r}
 str(dataset)
 ```
-# sample of raw dataset(first 10 rows)
+dataset structure
+
 ```{r}
 head(dataset, 10)
 ```
-# sample of raw dataset(last 10 rows)
+sample of raw dataset(first 10 rows)
+
 ```{r}
 tail(dataset, 10)
 ```
-# summary of dataset
+sample of raw dataset(last 10 rows)
+
 ```{r}
 summary(dataset)
 ```
-# variance of numeric data
+summary of dataset
+
 ```{r}
 var(dataset$NA_Sales)
 var(dataset$EU_Sales)
@@ -87,6 +92,7 @@ var(dataset$JP_Sales)
 var(dataset$Other_Sales)
 var(dataset$Global_Sales)
 ```
+variance of numeric data
 # platform pie chart:
 
 ```{r}
