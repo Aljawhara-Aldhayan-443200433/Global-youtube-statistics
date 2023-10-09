@@ -44,6 +44,7 @@ Our class label is “Popular”: it predicts whether a game will sell 1000000 o
 dataset=read.csv("vgsales.csv")
 
 # libraries
+```{r}
 library(outliers) 
 library(dplyr)
 library(Hmisc)
@@ -55,31 +56,37 @@ library(faux)
 library(DataExplorer)
 library(randomForest)
 options(max.print=9999999)
-
+```
 
 # dataset info
+```{r}
 dim(dataset)
 names(dataset)
-
+```
 # dataset structure
+```{r}
 str(dataset)
-
+```
 # sample of raw dataset(first 10 rows)
+```{r}
 head(dataset, 10)
-
+```
 # sample of raw dataset(last 10 rows)
+```{r}
 tail(dataset, 10)
-
+```
 # summary of dataset
+```{r}
 summary(dataset)
-
+```
 # variance of numeric data
+```{r}
 var(dataset$NA_Sales)
 var(dataset$EU_Sales)
 var(dataset$JP_Sales)
 var(dataset$Other_Sales)
 var(dataset$Global_Sales)
-
+```
 # platform pie chart:
 
 ```{r}
