@@ -1,6 +1,8 @@
 ---
 output: html_notebook
 ---
+#IT326 Project
+
 
 
 
@@ -79,7 +81,7 @@ var(dataset$JP_Sales)
 var(dataset$Other_Sales)
 var(dataset$Global_Sales)
 
-# platform pie chart
+# platform pie chart:
 
 ```{r}
 
@@ -122,11 +124,15 @@ boxplot(dataset$JP_Sales)
 ```{r}
 boxplot(dataset$Other_Sales) 
 ```  
+The boxplot of the Other-sales attribute indicate that the values are close to each other ,and there is a lot of outliers since the dataset represents the global sales of video games. 
+
 # boxPlot for Global_Sales
 
 ```{r}
 boxplot(dataset$Global_Sales)
 ```  
+The boxplot of the Global-sales attribute indicate that the values are close to each other ,and there is a lot of outliers since the dataset represents the global sales of video games. 
+
 
 
 # boxPlots for genre and Global_Sales
