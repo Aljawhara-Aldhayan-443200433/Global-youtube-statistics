@@ -1,9 +1,8 @@
 ---
 output: html_notebook
 ---
-<h1> IT326 Project</h1>
-
-<h2>Description:</h2>
+metadatatitle="project"
+# Description:
 
 This dataset, obtained from vgchartz.com, provides a valuable resource for exploring the dynamics between gaming platforms and genres in the top 100 global video games. It enables us to analyze the platforms that are influencing worldwide sales, identify the most prosperous genres in various global regions, and track the evolving trends in both platform preference and genre popularity over time. 
 
@@ -53,6 +52,7 @@ library(faux)
 library(DataExplorer)
 library(randomForest)
 options(max.print=9999999)
+
 
 # dataset info
 dim(dataset)
