@@ -124,12 +124,14 @@ boxplot(dataset$JP_Sales)
 ```{r}
 boxplot(dataset$Other_Sales) 
 ```  
+
 The boxplot of the Other-sales attribute indicate that the values are close to each other ,and there is a lot of outliers since the dataset represents the global sales of video games. 
 
 # boxPlot for Global_Sales
 
 ```{r}
 boxplot(dataset$Global_Sales)
+
 ```  
 The boxplot of the Global-sales attribute indicate that the values are close to each other ,and there is a lot of outliers since the dataset represents the global sales of video games. 
 
