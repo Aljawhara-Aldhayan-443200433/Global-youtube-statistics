@@ -14,12 +14,11 @@ This dataset, obtained from vgchartz.com, provides a valuable resource for explo
 
 # Goal:
 
-Our goal  from studying this dataset is to utilize classification and clustering techniques on the input data to make predictions about the popularity of upcoming games.
+Popular' is our class label, we will use Global_Sales attribute to predict whether a game will sell 1000000 or more globally. Our task of data mining is regression.
 
 
 
-
-# Attributes discerption:
+# Attributes description:
 
 this dataset has 11 attributes and 16599 objects.
 
