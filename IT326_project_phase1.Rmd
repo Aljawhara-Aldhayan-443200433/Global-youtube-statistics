@@ -1,7 +1,9 @@
 ---
 output: html_notebook
 ---
-metadatatitle="project"
+
+
+
 # Description:
 
 This dataset, obtained from vgchartz.com, provides a valuable resource for exploring the dynamics between gaming platforms and genres in the top 100 global video games. It enables us to analyze the platforms that are influencing worldwide sales, identify the most prosperous genres in various global regions, and track the evolving trends in both platform preference and genre popularity over time. 
@@ -87,7 +89,7 @@ precentages <- tab %>% prop.table() %>% round(3) * 100
 txt <- paste0(names(tab), '\n', precentages, '%') 
 pie(tab, labels=txt) 
 ```
-
+We notice from the pie chart of platform attribute that releasing a game for PS users will increase the popularity of the game since it is the most common platform among gamers. 
 
 
 # Popular genres 
