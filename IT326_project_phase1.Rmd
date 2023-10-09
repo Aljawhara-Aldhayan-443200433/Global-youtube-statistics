@@ -113,10 +113,16 @@ boxplot(dataset$EU_Sales)
 boxplot(dataset$JP_Sales)
 
 # boxPlot for Other_Sales
-boxplot(dataset$Other_Sales) 
 
+```{r}
+boxplot(dataset$Other_Sales) 
+```  
 # boxPlot for Global_Sales
+
+```{r}
 boxplot(dataset$Global_Sales)
+```  
+
 
 # boxPlots for genre and Global_Sales
 qplot(data = dataset, x=Global_Sales,y=Genre,fill=I("yellow"),width=0.5 ,geom = "boxplot")
