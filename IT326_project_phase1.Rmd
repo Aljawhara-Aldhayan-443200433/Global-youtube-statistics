@@ -26,15 +26,25 @@ Our goal  from studying this dataset is to utilize classification and clustering
 This dataset has 11 attributes and 16599 objects.
 
 Rank: Ranking of the game based on global sales. 
+
 Name: Name of the game. 
-Platform: Platform the game was released on. 
+
+Platform: Platform the game was released on.
+
 Year: Year the game was released. 
+
 Genre: Genre of the game.
+
 Publisher: Publisher of the game. 
+
 NA_Sales: Sales of the game in North America. 
+
 EU_Sales: Sales of the game in Europe. 
+
 JP_Sales: Sales of the game in Japan. 
-Other_Sales: Sales of the game in other regions. 
+
+Other_Sales: Sales of the game in other regions.
+
 Global_Sales: Total sales of the game worldwide.
 
 
@@ -367,5 +377,8 @@ we will rmove the (JP_Sales) because it is of low importance to our class_label(
 dataset<- dataset[,-9]
 ```
 
-
+# Dataset after pre-processing
+```{r}
+print(dataset)
+```
 
