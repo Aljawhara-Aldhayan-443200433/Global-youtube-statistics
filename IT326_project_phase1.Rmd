@@ -80,8 +80,7 @@ var(dataset$Global_Sales)
 
 ```{r}
 
-dataset2 <- dataset %>% sample_n(50)
-dataset2$Platform %>% table() %>% pie() # plot pie chart without percentages
+ # plot pie chart without percentages
 tab <- dataset2$Platform %>% table()
 precentages <- tab %>% prop.table() %>% round(3) * 100 
 txt <- paste0(names(tab), '\n', precentages, '%') 
