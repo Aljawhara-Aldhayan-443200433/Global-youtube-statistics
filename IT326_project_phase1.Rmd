@@ -262,6 +262,8 @@ OutOS
 Find_outlier 
 
 ```
+
+
 #outlier of Global_sales 
 
 ```{r}
