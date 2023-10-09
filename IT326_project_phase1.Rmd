@@ -88,6 +88,7 @@ var(dataset$Global_Sales)
 tab <- dataset2$Platform %>% table()
 precentages <- tab %>% prop.table() %>% round(3) * 100 
 txt <- paste0(names(tab), '\n', precentages, '%') 
+
 pie(tab, labels=txt) 
 
 ```
