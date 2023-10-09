@@ -85,13 +85,14 @@ var(dataset$Global_Sales)
 
 ```{r}
 
- # plot pie chart without percentages
 tab <- dataset2$Platform %>% table()
 precentages <- tab %>% prop.table() %>% round(3) * 100 
 txt <- paste0(names(tab), '\n', precentages, '%') 
 pie(tab, labels=txt) 
+metadatatitle="..."
 ```
 We notice from the pie chart of platform attribute that releasing a game for PS users will increase the popularity of the game since it is the most common platform among gamers. 
+
 
 
 # Popular genres 
@@ -119,6 +120,8 @@ boxplot(dataset$EU_Sales)
 # boxPlot for JP_Sales
 boxplot(dataset$JP_Sales)
 
+
+
 # boxPlot for Other_Sales
 
 ```{r}
@@ -126,6 +129,8 @@ boxplot(dataset$Other_Sales)
 ```  
 
 The boxplot of the Other-sales attribute indicate that the values are close to each other ,and there is a lot of outliers since the dataset represents the global sales of video games. 
+
+
 
 # boxPlot for Global_Sales
 
