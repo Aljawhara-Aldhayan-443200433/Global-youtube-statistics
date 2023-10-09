@@ -207,6 +207,11 @@ roc_imp[order(roc_imp$score,decreasing = TRUE),]
 dataset<- dataset[,-9]
 
 
+
+
+
+
+
 #outlier of NA_Sales
 OutNA_Sales = outlier(dataset$NA_Sales, logical =TRUE)
 sum(OutNA_Sales)
@@ -225,6 +230,29 @@ sum(OutJP_Sales)
 Find_outlier = which(OutJP_Sales ==TRUE, arr.ind = TRUE)
 OutJP_Sales
 Find_outlier
+
+
+#outlier of other_sales 
+```{r}
+OutOS=outlier(dataset$Other_Sales, logical=TRUE)  
+sum(OutOS)  
+Find_outlier=which(OutOS==TRUE, arr.ind=TRUE)  
+OutOS 
+Find_outlier 
+
+```
+#outlier of Global_sales 
+
+```{r}
+OutGS=outlier(dataset$Global_Sales, logical=TRUE)  
+sum(OutGS)  
+Find_outlier=which(OutGS==TRUE, arr.ind=TRUE)  
+OutGS 
+Find_outlier 
+
+```
+
+
 
 #remove outliers 
 dataset= dataset[-Find_outlier,]
