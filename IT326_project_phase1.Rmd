@@ -86,7 +86,7 @@ names(dataset)
 
 
 
-Dataset structure including number of coulums and rows, attribute types:
+Dataset structure:
 ```{r}
 str(dataset)
 ```
