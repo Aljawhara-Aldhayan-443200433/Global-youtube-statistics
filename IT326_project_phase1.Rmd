@@ -250,21 +250,13 @@ NullYear
 checking for nulls in year
 we won't delete the null and we will leave them as global constant because we want the sales data out of them.
 
-
-```{r}
-sum(is.na(dataset$Other_Sales))
-NullOther_Sales<-dataset[dataset$Other_Sales=="N/A",]
-
-
-```
-There is no null values in the other_sales.
-
 ```{r}
 sum(is.na(dataset$Genre))
 NullGenre<-dataset[dataset$Genre=="N/A",]
 NullGenre
 ```
 checking for nulls in Genre(there is no nulls)
+
 ```{r}
 sum(is.na(dataset$Publisher))
 NullPublisher<-dataset[dataset$Publisher=="N/A",]
@@ -273,6 +265,13 @@ NullPublisher
 checking for nulls in Publisher.
 we won't delete the null and we will leave them as global constant as it is because we want the sales data of them.
 
+```{r}
+sum(is.na(dataset$Other_Sales))
+NullOther_Sales<-dataset[dataset$Other_Sales=="N/A",]
+
+
+```
+There is no null values in the other_sales.
 
 ```{r}
 sum(is.na(dataset$Global_Sales))
