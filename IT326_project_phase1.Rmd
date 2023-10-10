@@ -53,7 +53,7 @@ Popular' is our class label, we will use Global_Sales attribute to predict wheth
 
 Importing our dataset:
 ```{r}
-dataset=read.csv("vgsales.csv")
+dataset=read.csv("Dataset/vgsales.csv")
 ```
 
 
@@ -398,17 +398,24 @@ We chose min-max normalization instead of z-score normalization because min-max 
 
 
 # Feautre selection
-Our class label (popular) refers to Global_Sales. Other sales regions will be evaluated based on their importance to (global_sales) column. and those that are less important will be deleted from the dataset.
-use roc_curve area as score
+
+Our class label (popular) refers to Global_Sales.because we have multiple regions sales we chose to evaluate each region sales based on their importance to (global_sales) column,and those that are less important will be deleted from the dataset.
+
+
+Use roc_curve area as score
 ```{r}
 roc_imp <- filterVarImp(x = dataset[,7:10], y = dataset$Global_Sales)
 ```
-sort the score in decreasing order
+
+
+Sort the score in decreasing order
 ```{r}
 roc_imp <- data.frame(cbind(variable = rownames(roc_imp), score = roc_imp[,1]))
 roc_imp$score <- as.double(roc_imp$score)
 roc_imp[order(roc_imp$score,decreasing = TRUE),]
 ```
+
+
 we will remove the (JP_Sales) because it is of low importance to our class_label(Global_Sales)
 ```{r}
 dataset<- dataset[,-9]
