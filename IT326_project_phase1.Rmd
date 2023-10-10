@@ -162,19 +162,19 @@ In terms of genre, action games are the most popular, followed by sports and mus
 boxplot(dataset$NA_Sales , main="
 BoxPlot for NA_Sales")
 ```
-The boxplot of the NA_Sales  (Sales of the game in north America) attribute indicate that the values are close to each other ,and there is a lot of outliers since the dataset represents all the north America sales of video games.
+The boxplot of the NA_Sales  (Sales of the game in north America) attribute indicates that the values are close to each other ,and there are a lot of outliers since the dataset represents all the north America sales of video games.
 
 ```{r}
 boxplot(dataset$EU_Sales, main="
  BoxPlot for EU_Sales")
 ```
-The boxplot of the EU_Sales (sales of the game in Europe) attribute indicate that the values are close to each other, and there is a lot of outliers since the dataset represents all the Europe sales of video games.
+The boxplot of the EU_Sales (sales of the game in Europe) attribute indicates that the values are close to each other, and there are a lot of outliers since the dataset represents all the Europe sales of video games.
 
 ```{r}
 boxplot(dataset$JP_Sales , main="
  BoxPlot for JP_Sales")
 ```
-The boxplot of the JP_Sales (sales of the game in Japan) attribute indicate that the values are close to each other, and there is a lot of outliers since the dataset represents all the Japan sales of video games.
+The boxplot of the JP_Sales (sales of the game in Japan) attribute indicates that the values are close to each other, and there are a lot of outliers since the dataset represents all the Japan sales of video games.
 
 
 ```{r}
@@ -195,10 +195,11 @@ The boxplot of the Global-sales attribute indicate that the values are close to 
 
 
 
-
 ```{r}
 qplot(data = dataset, x=Global_Sales,y=Genre,fill=I("yellow"),width=0.5 ,geom = "boxplot" , main = "BoxPlots for genre and Global_Sales")
 ```
+
+In the boxplot we can see that all the genres have Glob_ sales close to each other, but we notice an outlier that reaches more than 80 Glob_ sales which is a game with genre sports. 
 
 ```{r}
 dataset$Year %>% table() %>% barplot( main = "Barplot for year")
