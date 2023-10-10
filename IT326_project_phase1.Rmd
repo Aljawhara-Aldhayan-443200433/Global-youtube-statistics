@@ -144,17 +144,18 @@ boxplot(dataset$NA_Sales , main="
 BoxPlot for NA_Sales")
 ```
 The boxplot of the NA_Sales  (Sales of the game in north America) attribute indicate that the values are close to each other ,and there is a lot of outliers since the dataset represents all the north America sales of video games.
+
 ```{r}
 boxplot(dataset$EU_Sales, main="
  BoxPlot for EU_Sales")
 ```
+The boxplot of the EU_Sales (sales of the game in Europe) attribute indicate that the values are close to each other, and there is a lot of outliers since the dataset represents all the Europe sales of video games.
 
 ```{r}
 boxplot(dataset$JP_Sales , main="
  BoxPlot for JP_Sales")
 ```
-
-
+The boxplot of the JP_Sales (sales of the game in Japan) attribute indicate that the values are close to each other, and there is a lot of outliers since the dataset represents all the Japan sales of video games.
 
 
 ```{r}
