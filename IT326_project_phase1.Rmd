@@ -225,6 +225,7 @@ dataset$Rank=as.character(dataset$Rank)
 We transformed the Rank from numric to char,because we will use them as ordinal data.
 
 # Null checking
+we checked nulls values to know how many nulls values we have, so we can determine how we will deal with them.
 ```{r}
 sum(is.na(dataset$Rank))
 NullRank<-dataset[dataset$Rank=="N/A",]
