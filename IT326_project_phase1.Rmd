@@ -53,7 +53,7 @@ Popular' is our class label, we will use Global_Sales attribute to predict wheth
 
 Importing our dataset:
 ```{r}
-dataset=read.csv("vgsales.csv")
+dataset=read.csv("Dataset/vgsales.csv")
 ```
 
 
@@ -225,9 +225,6 @@ dataset$Rank=as.character(dataset$Rank)
 We transformed the Rank from numric to char,because we will use them as ordinal data.
 
 # Null checking
-
-we checked nulls values to know how many nulls values we have, so we can determine how we will deal with them.
-
 ```{r}
 sum(is.na(dataset$Rank))
 NullRank<-dataset[dataset$Rank=="N/A",]
@@ -301,7 +298,7 @@ NullOther_Sales<-dataset[dataset$Other_Sales=="N/A",]
 
 
 ```
-checking for nulls in other_sales (there is no nulls)
+There is no null values in the other_sales.
 
 ```{r}
 sum(is.na(dataset$Global_Sales))
@@ -309,7 +306,7 @@ NullGlobal_Sales<-dataset[dataset$Global_Saless=="N/A",]
 
 
 ```
-checking for nulls in Global_Sales (there is no nulls)
+There is no null values in the Global_Sales.
 
 # Encoding
 ```{r}
@@ -325,7 +322,7 @@ Since most machine learning algorithms work with numbers and not with text or ca
 # Outliers
 outlier of NA_Sales
 ```{r}
-OutNA_Sales = outlier(dataset$NA_Sales)
+OutNA_Sales = outlier(dataset$NA_Sales, logical =TRUE)
 sum(OutNA_Sales)
 Find_outlier = which(OutNA_Sales ==TRUE, arr.ind = TRUE)
 OutNA_Sales
@@ -380,6 +377,8 @@ dataset= dataset[-Find_outlier,]
 
 
 # Normalization
+The normalization of data will improve the performance of many machine learning algorithms by accounting for differences in the scale of the input features.
+
 Dataset before normalization:
 ```{r}
 datsetWithoutNormalization<-dataset
@@ -401,17 +400,24 @@ We chose min-max normalization instead of z-score normalization because min-max 
 
 
 # Feautre selection
-Our class label (popular) refers to Global_Sales. Other sales regions will be evaluated based on their importance to (global_sales) column. and those that are less important will be deleted from the dataset.
-use roc_curve area as score
+
+Our class label (popular) refers to Global_Sales.because we have multiple regions sales we chose to evaluate each region sales based on their importance to (global_sales) column,and those that are less important will be deleted from the dataset.
+
+
+Use roc_curve area as score
 ```{r}
 roc_imp <- filterVarImp(x = dataset[,7:10], y = dataset$Global_Sales)
 ```
-sort the score in decreasing order
+
+
+Sort the score in decreasing order
 ```{r}
 roc_imp <- data.frame(cbind(variable = rownames(roc_imp), score = roc_imp[,1]))
 roc_imp$score <- as.double(roc_imp$score)
 roc_imp[order(roc_imp$score,decreasing = TRUE),]
 ```
+
+
 we will remove the (JP_Sales) because it is of low importance to our class_label(Global_Sales)
 ```{r}
 dataset<- dataset[,-9]
