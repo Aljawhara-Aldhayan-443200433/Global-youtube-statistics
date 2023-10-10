@@ -1,7 +1,8 @@
 ---
+title: "Global video games sales"
 output: html_notebook
 ---
-#IT326 Project
+###IT326 Project
 
 
 
@@ -48,16 +49,7 @@ Popular' is our class label, we will use Global_Sales attribute to predict wheth
 
 
 
-
-
-
-Importing our dataset:
-```{r}
-dataset=read.csv("Dataset/vgsales.csv")
-```
-
-
-loading libraries needed for our data mining tasks:
+# loading libraries needed for our data mining tasks:
 ```{r}
 library(outliers) 
 library(dplyr)
@@ -66,6 +58,15 @@ library(ggplot2)
 library(mlbench)
 library(caret)
 options(max.print=9999999)
+```
+
+
+
+
+
+Importing our dataset:
+```{r}
+dataset=read.csv("Dataset/vgsales.csv")
 ```
 
 
@@ -212,7 +213,7 @@ We used Scatterplot to determine the type of correlation we have between the sal
  
  
       
-# Pre - processing
+# (Pre - processing)
 
 # Varaible transformation
 ```{r}
