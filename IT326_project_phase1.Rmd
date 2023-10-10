@@ -301,7 +301,7 @@ NullOther_Sales<-dataset[dataset$Other_Sales=="N/A",]
 
 
 ```
-There is no null values in the other_sales.
+checking for nulls in other_sales (there is no nulls)
 
 ```{r}
 sum(is.na(dataset$Global_Sales))
@@ -309,7 +309,7 @@ NullGlobal_Sales<-dataset[dataset$Global_Saless=="N/A",]
 
 
 ```
-There is no null values in the Global_Sales.
+checking for nulls in Global_Sales (there is no nulls)
 
 # Encoding
 ```{r}
