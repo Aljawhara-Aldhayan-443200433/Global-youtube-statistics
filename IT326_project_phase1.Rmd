@@ -11,7 +11,7 @@ output: html_notebook
 This dataset, obtained from vgchartz.com, provides a valuable resource for exploring the dynamics between gaming platforms and genres in the top 100 global video games. It enables us to analyze the platforms that are influencing worldwide sales, identify the most prosperous genres in various global regions, and track the evolving trends in both platform preference and genre popularity over time. 
 
 # Source and link:
-Source: vgchartz.com
+Source: Kaggle
 
 URL link: https://www.kaggle.com/datasets/gregorut/videogamesales
 
@@ -23,29 +23,20 @@ Our goal  from studying this dataset is to utilize classification and clustering
 
 # Attributes description:
 
-This dataset has 11 attributes and 16599 objects.
 
-Rank: Ranking of the game based on global sales. 
-
-Name: Name of the game. 
-
-Platform: Platform the game was released on.
-
-Year: Year the game was released. 
-
-Genre: Genre of the game.
-
-Publisher: Publisher of the game. 
-
-NA_Sales: Sales of the game in North America. 
-
-EU_Sales: Sales of the game in Europe. 
-
-JP_Sales: Sales of the game in Japan. 
-
-Other_Sales: Sales of the game in other regions.
-
-Global_Sales: Total sales of the game worldwide.
+| **Attributes name** | **Description**                   | **Data type** | 
+|-----------------------------|-------------------------------------|---------------------|
+|Rank               | Ranking of the game based on global sales. | Numeric       |
+| Name            | Name of the game. | Nominal       | 
+| Platform      | Platform the game was released on. | Nominal       | 
+| Year               | Year the game was released. | Ordinal       | 
+| Genre            | Genre of the game | Nominal       | 
+| Publisher      | Publisher of the game. | Nominal       | 
+| NA_Sales      | Sales of the game in North America | Numeric (ratio-scaled)       | 
+| EU_Sales       | Sales of the game in Europe | Numeric (ratio-scaled)        | 
+| JP_Sales        | Sales of the game in Japan | Numeric (ratio-scaled)        | 
+| Other_Sales | Sales of the game in other regions | Numeric (ratio-scaled)        | 
+| Global_Sales  | Total sales of the game worldwide | Numeric (ratio-scaled)     |     
 
 
 # Class label:
