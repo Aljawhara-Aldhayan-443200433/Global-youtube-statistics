@@ -205,7 +205,7 @@ In the boxplot we can see that all the genres have Glob_ sales close to each oth
 dataset$Year %>% table() %>% barplot( main = "Barplot for year")
 ```
 
-By the barplot we can see that the number of video games were low from 1980 year until the 2004 numbers of games grow to more than 1200 till 2012.
+By the barplot we can see that the number of video games were low from 1980 year until the 2000 numbers of games grow to more than 1200 till 2012.
 
 
 ```{r}
@@ -269,6 +269,28 @@ NullPublisher
 ```
 checking for nulls in Publisher.
 we won't delete the null and we will leave them as global constant as it is because we want the sales data of them.
+
+```{r}
+sum(is.na(dataset$NA_Sales))
+NullNA_Sales<-dataset[dataset$NA_Sales=="N/A",]
+NullNA_Sales
+```
+checking for nulls in NA_Sales (there is no nulls)
+
+```{r}
+sum(is.na(dataset$EU_Sales))
+NullEU_Sales<-dataset[dataset$EU_Sales=="N/A",]
+NullEU_Sales
+```
+checking for nulls in EU_Sales (there is no nulls)
+
+```{r}
+sum(is.na(dataset$JP_Sales))
+NullJP_Sales<-dataset[dataset$JP_Sales=="N/A",]
+NullJP_Sales
+```
+checking for nulls in JP_Sales (there is no nulls)
+
 
 ```{r}
 sum(is.na(dataset$Other_Sales))
