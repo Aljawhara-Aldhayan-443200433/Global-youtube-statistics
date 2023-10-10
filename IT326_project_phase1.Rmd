@@ -325,7 +325,7 @@ Since most machine learning algorithms work with numbers and not with text or ca
 # Outliers
 outlier of NA_Sales
 ```{r}
-OutNA_Sales = outlier(dataset$NA_Sales, logical =TRUE)
+OutNA_Sales = outlier(dataset$NA_Sales)
 sum(OutNA_Sales)
 Find_outlier = which(OutNA_Sales ==TRUE, arr.ind = TRUE)
 OutNA_Sales
