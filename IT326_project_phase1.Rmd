@@ -77,7 +77,7 @@ dataset=read.csv("Dataset/vgsales.csv")
 
 # General info about our dataset:
 
-cheking number of rows and columns, and cheking dimensionality and coulumns names
+checking number of rows and columns, and cheking dimensionality and coulumns names:
 ```{r}
 nrow(dataset)
 ncol(dataset)
@@ -105,7 +105,7 @@ sample of raw dataset(last 10 rows):
 tail(dataset, 10)
 ```
 
-summary of our dataset:
+Five number summary of each attribute in our dataset:
 ```{r}
 summary(dataset)
 ```
@@ -207,7 +207,7 @@ In the boxplot we can see that all the genres have Glob_ sales close to each oth
 dataset$Year %>% table() %>% barplot( main = "Barplot for year")
 ```
 
-By the barplot we can see that the number of video games were low from 1980 year until the 2000 numbers of games grow to more than 1200 till 2012.
+ The barplot of year illustrate that the number of video games were low from 1980 until 2000 , then number of games increased to more than 1200 till 2012.
 
 
 ```{r}
