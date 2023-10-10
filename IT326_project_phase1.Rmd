@@ -2,23 +2,27 @@
 title: "Global video games sales"
 output: html_notebook
 ---
-###IT326 Project
 
 
+# Proplem:
+We live in a time when video games are extremely popular. The global video game market continues to grow year-on-year, and the industry is now valued at over $100 billion worldwide. With technology continuously pushing the boundaries, video games have only become more popular and more high-quality. Gameplay mechanics, cutting-edge graphics, and intricate storylines make today's games more immersive than ever before. We chose this dataset to gain insights on the popularity of different gaming platforms and the most successful genres associated with those platforms. 
 
+# Data Mining Task:
+Our task data mining task is to predict the popularity of upcoming games using regression.
 
 # Description of the dataset:
 
 The dataset provided by vgchartz.com supply us with a valuable resource to explore the platforms and genres of the top 16599 global video games. Through it, we can analyze the most popular platforms and genres that are influencing global sales, and detectr how regions' sales affect global sales. 
+
+# Our goal:
+
+Our goal  from studying this dataset is to utilize classification and clustering techniques on the input data to make predictions about the popularity of upcoming games.
 
 # Source and link:
 Source: Kaggle
 
 URL link: https://www.kaggle.com/datasets/gregorut/videogamesales
 
-# Our goal:
-
-Our goal  from studying this dataset is to utilize classification and clustering techniques on the input data to make predictions about the popularity of upcoming games.
 
 
 
@@ -42,8 +46,7 @@ Our goal  from studying this dataset is to utilize classification and clustering
 
 # Class label:
 
-Popular' is our class label, we will use Global_Sales attribute to predict whether a game will sell 1000000 or more globally. Our task of data mining is regression.
-
+Popular' is our class label, we will use Global_Sales attribute to predict whether a game will sell 1000000 or more globally. 
 
 
 
@@ -64,7 +67,7 @@ options(max.print=9999999)
 
 
 
-Importing our dataset:
+# Importing our dataset:
 ```{r}
 dataset=read.csv("Dataset/vgsales.csv")
 ```
@@ -72,7 +75,9 @@ dataset=read.csv("Dataset/vgsales.csv")
 
 
 
-General info about our dataset including  number of rows and columns, and cheking dimensionality and coulumns names:
+# General info about our dataset:
+
+cheking number of rows and columns, and cheking dimensionality and coulumns names
 ```{r}
 nrow(dataset)
 ncol(dataset)
@@ -213,15 +218,15 @@ We used Scatterplot to determine the type of correlation we have between the sal
  
  
       
-# (Pre - processing)
+# (Pre - processing):
 
-# Varaible transformation
+# Varaible transformation:
 ```{r}
 dataset$Rank=as.character(dataset$Rank)
 ```
 We transformed the Rank from numric to char,because we will use them as ordinal data.
 
-# Null checking
+# Null checking:
 we checked nulls values to know how many nulls values we have, so we can determine how we will deal with them.
 ```{r}
 sum(is.na(dataset$Rank))
@@ -306,7 +311,7 @@ NullGlobal_Sales<-dataset[dataset$Global_Saless=="N/A",]
 ```
 There is no null values in the Global_Sales.
 
-# Encoding
+# Encoding:
 We will encode our categorical data since most machine learning algorithms work with numbers rather than text.
 
 ```{r}
@@ -319,7 +324,7 @@ dataset$Genre=factor(dataset$Genre,levels=c("Action","Adventure","Fighting","Pla
 ```
 Since most machine learning algorithms work with numbers and not with text or categorical variables, this column will be encoded to facilitate our data mining task.
 
-# Outliers
+# Outliers:
 Analyses and statistical models can be ruined by outliers, making it difficult to detect a true effect. Therefore, we are checking for them and removing them if we find any.
 
 outlier of NA_Sales
@@ -369,7 +374,7 @@ dataset= dataset[-Find_outlier,]
 
 
 
-# Normalization
+# Normalization:
 The normalization of data will improve the performance of many machine learning algorithms by accounting for differences in the scale of the input features.
 
 Dataset before normalization:
@@ -392,7 +397,7 @@ We chose min-max normalization instead of z-score normalization because min-max 
 
 
 
-# Feautre selection
+# Feautre selection:
 
 Our class label (popular) refers to Global_Sales.because we have multiple regions sales we chose to evaluate each region sales based on their importance to (global_sales) column,and those that are less important will be deleted from the dataset.
 
@@ -416,7 +421,7 @@ we will remove the (JP_Sales) because it is of low importance to our class_label
 dataset<- dataset[,-9]
 ```
 
-# Dataset after pre-processing
+# Dataset after pre-processing:
 ```{r}
 print(dataset)
 ```
