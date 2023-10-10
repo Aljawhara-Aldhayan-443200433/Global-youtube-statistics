@@ -205,6 +205,9 @@ In the boxplot we can see that all the genres have Glob_ sales close to each oth
 dataset$Year %>% table() %>% barplot( main = "Barplot for year")
 ```
 
+By the barplot we can see that the number of video games were low from 1980 year until the 2004 numbers of games grow to more than 1200 till 2012.
+
+
 ```{r}
 pairs(~NA_Sales + EU_Sales + JP_Sales + Other_Sales + Global_Sales, data = dataset,
       main = "Sales Scatterplot")
