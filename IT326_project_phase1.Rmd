@@ -8,7 +8,7 @@ output: html_notebook
 We live in a time when video games are extremely popular. The global video game market continues to grow year-on-year, and the industry is now valued at over $100 billion worldwide. With technology continuously pushing the boundaries, video games have only become more popular and more high-quality. Gameplay mechanics, cutting-edge graphics, and intricate storylines make today's games more immersive than ever before. We chose this dataset to gain insights on the popularity of different gaming platforms and the most successful genres associated with those platforms. 
 
 # Data Mining Task:
-Our task data mining task is to predict the popularity of upcoming games using regression.
+Our data mining task is to predict the popularity of upcoming games using regression.
 
 # Description of the dataset:
 
@@ -16,7 +16,7 @@ The dataset provided by vgchartz.com supply us with a valuable resource to explo
 
 # Our goal:
 
-Our goal  from studying this dataset is to utilize classification and clustering techniques on the input data to make predictions about the popularity of upcoming games.
+Our goal  from studying this dataset is to utilize regression techniques on the input data to make predictions about the popularity of upcoming games.
 
 # Source and link:
 Source: Kaggle
@@ -136,7 +136,7 @@ pie(tab, labels=txt , main = "Pie chart of Platform")
 
 ```
 
-We notice from the pie chart of platform attribute that releasing a game for PS users will increase the popularity of the game since it is the most common platform among gamers. 
+This pie chart illustrate platforms of global video games , We notice from the pie chart of platform attribute that releasing a game for PS users will increase the popularity of the game since it is the most common platform among gamers. 
 
 
 
@@ -154,7 +154,7 @@ bb <- dataset$Genre %>% table() %>% barplot(axisnames=F, main = "Barplot for Pop
 
 text(bb,tab/2,labels=txt,cex=1.5) 
 ```
-In terms of genre, action games are the most popular, followed by sports and music games. It is safe to assume that a high number of genres of this nature exist due to their popularity and sales.
+This barplot illustrates popularity of global video games genres ,In terms of genre, action games are the most popular, followed by sports and music games. It is safe to assume that a high number of genres of this nature exist due to their popularity and sales.
 
 
 
