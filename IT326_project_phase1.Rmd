@@ -5,7 +5,11 @@ output: html_notebook
 
 
 # Proplem:
-We live in a time when video games are extremely popular. The global video game market continues to grow year-on-year, and the industry is now valued at over $100 billion worldwide. With technology continuously pushing the boundaries, video games have only become more popular and more high-quality. Gameplay mechanics, cutting-edge graphics, and intricate storylines make today's games more immersive than ever before. We chose this dataset to gain insights on the popularity of different gaming platforms and the most successful genres associated with those platforms. 
+We live in a time when video games are extremely popular. The global video game market continues to grow year-on-year, and the industry is now valued at over $100 billion worldwide. With technology continuously pushing the boundaries, video games have only become more popular and more high-quality. Gameplay mechanics, cutting-edge graphics, and intricate storylines make today's games more immersive than ever before. We chose this dataset to gain insights on the popularity of upcoming games. 
+
+
+# Class label:
+Popular' is our class label, we will use Global_Sales attribute to predict whether a game will sell 1000000 or more globally. 
 
 # Data Mining Task:
 Our data mining task is to predict the popularity of upcoming games using regression.
@@ -43,10 +47,6 @@ URL link: https://www.kaggle.com/datasets/gregorut/videogamesales
 | Other_Sales | Sales of the game in other regions | Numeric (ratio-scaled)        | 
 | Global_Sales  | Total sales of the game worldwide | Numeric (ratio-scaled)     |     
 
-
-# Class label:
-
-Popular' is our class label, we will use Global_Sales attribute to predict whether a game will sell 1000000 or more globally. 
 
 
 
