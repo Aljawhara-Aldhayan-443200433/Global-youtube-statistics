@@ -11,11 +11,12 @@ We live in a time when video games are extremely popular. The global video game 
 # Class label:
 Popular' is our class label, we will use Global_Sales attribute to predict whether a game will sell 1000000 or more globally. 
 
+
 # Data Mining Task:
 Our data mining task is to predict the popularity of upcoming games using regression.
 
-# Description of the dataset:
 
+# Description of the dataset:
 The dataset provided by vgchartz.com supply us with a valuable resource to explore the platforms and genres of the top 16599 global video games. Through it, we can analyze the most popular platforms and genres that are influencing global sales, and detectr how regions' sales affect global sales. 
 
 # Our goal:
