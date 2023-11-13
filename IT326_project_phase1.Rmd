@@ -494,7 +494,7 @@ classLabel<-dataset$Global_Sales
 
 ```{r}
 # Removing the classLabel before the clustring process
-dataset<- dataset[,-10]
+datasetClustering<- dataset[,-10]
 ```
 
 
