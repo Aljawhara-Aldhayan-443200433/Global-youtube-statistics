@@ -855,7 +855,7 @@ before starting the clustring process we need to remove the class label since cl
 ```{r}
 # We stored the class label in a varible just in case of further need(We need it to compute Bcubed precision and recall)
 
-classLabel<-dataset$Global_Sales
+classLabel<-dataset$Global_Sales 
 
 ```
 
