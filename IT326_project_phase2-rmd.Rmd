@@ -436,12 +436,11 @@ unique(dataAfterDiscertize[,2])
 unique(dataAfterDiscertize[,3])
 unique(dataAfterDiscertize[,4])
 levels(dataAfterDiscertize$NA_Sales)<-c("low","medium","high")
-levels(dataAfterDiscertize$EU_Sales)<-c("low","high")
-levels(dataAfterDiscertize$Other_Sales)<-c("low","high")
+levels(dataAfterDiscertize$EU_Sales)<-c("low","medium","high")
+levels(dataAfterDiscertize$Other_Sales)<-c("low","medium","high")
 levels(dataAfterDiscertize$Global_Sales)<-c("low","medium","high")
-
 #Balancing
-
+dataset[,7:10]=dataAfterDiscertize[,1:4]
 library(groupdata2)
 dataset<-downsample(dataset,cat_col="Global_Sales")
 
@@ -479,7 +478,6 @@ myFormula <- Global_Sales ~  NA_Sales +EU_Sales+Other_Sales+Genre+Platform
 dataset_ctree <- ctree(myFormula, data=trainData)
  
 table(predict(dataset_ctree), trainData$Global_Sales)
-print(dataset_ctree)
 plot(dataset_ctree,type="simple")
 plot(dataset_ctree)
  
@@ -1212,7 +1210,6 @@ cat("BCubed Recall:", recall, "\n")
 
 
 As the graph of K=6 illustrated , there is a noticeable overlapping between the clusters that effect the cluster performance duo to the similarity between clusters and wide distance in the cluster itself as the high value of wss indicate (90.5%) ,the recall value is acceptable which is 0.22 and it is the lowest value between the other clusters, the value of precision 0.02 is low which can be duo to the presence of outliers, the value of average silhouette width is 0.52 which is bad for the clustering process it. Overall, the plot suggests that dividing the data into 3 clusters seems appropriate because the average Silhouette score .
-
 
 
 
