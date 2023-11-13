@@ -711,6 +711,157 @@ Lastly (90% training,10% test)
 It has the lowest accuracy (71.3%) and Precision(41.7%)
 So it’s the least split option to go for the model
 
+#CART 
+
+CART (Classification and Regression Trees) in R uses the Gini index to determine whether a randomly chosen element would be incorrectly classified. In the Gini index, we assess how likely it is for an element to be misclassified if it was randomly chosen. Generally, the lower the Gini index, the better the split.
+
+
+#CART tree: 90% training and 10% testing
+```{r}
+set.seed(15687)
+sample<-sample.int(n=nrow(dataset),size=floor(0.9*nrow(dataset)), replace=F)
+trainCart90<-dataset[sample,]
+testCart10<-dataset[-sample,]
+trainCart90<-trainCart90[,c(7:10,3,5)]
+testCart10<-testCart10[,c(7:10,3,5)]
+```
+
+```{r}
+library(rpart)
+library(rpart.plot)
+
+
+Global_Sales.test=testCart10$Global_Sales
+fit.tree = rpart(Global_Sales~ ., data=trainCart90, method = "class", cp=0)
+fit.tree
+rpart.plot(fit.tree)
+fit.tree$variable.importance
+pred.tree = predict(fit.tree, testCart10, type = "class")
+table(pred.tree,Global_Sales.test)
+printcp(fit.tree)
+```
+
+```{r}
+#Accuracy/precision/sensitivity of model is given by
+accuracy90=((510+  150 + 447)/nrow(testCart10))*100
+precision90=(((510/851)+(150/211)+(447/507))/3)*100
+sensitivity90=(((510/512)+(150/510)+(447/547))/3)*100
+specificity90=((((150+54+53+463)/1057)+((510+0+30+463)/1059)+((510+307+2+150)/1022))/3)*100
+```
+
+#CART tree: 80% training and 20% testing
+```{r}
+set.seed(15687)
+sample<-sample.int(n=nrow(dataset),size=floor(0.8*nrow(dataset)), replace=F)
+trainCart80<-dataset[sample,]
+testCart20<-dataset[-sample,]
+trainCart80<-trainCart80[,c(7:10,3,5)]
+testCart20<-testCart20[,c(7:10,3,5)]
+```
+
+
+```{r}
+library(rpart)
+library(rpart.plot)
+
+
+Global_Sales.test=testCart20$Global_Sales
+fit.tree = rpart(Global_Sales~ ., data=trainCart80, method = "class", cp=0)
+fit.tree
+rpart.plot(fit.tree)
+fit.tree$variable.importance
+pred.tree = predict(fit.tree, testCart20, type = "class")
+table(pred.tree,Global_Sales.test)
+printcp(fit.tree)
+```
+
+```{r}
+#Accuracy/precision/sensitivity of model is given by
+accuracy80=((1033+  321 + 875)/nrow(testCart20))*100
+precision80=(((1033/1688)+(321/443)+(875/1007))/3)*100
+sensitivity80=(((1033/1037)+(321/1036)+(875/1065))/3)*100
+specificity80=((((323+112+113+887)/2101)+((1033+1+66+887)/2102)+((1033+600+3+323)/2073))/3)*100
+```
+
+
+
+#CART tree: 70% training and 30% testing
+```{r}
+set.seed(15687)
+sample<-sample.int(n=nrow(dataset),size=floor(0.7*nrow(dataset)), replace=F)
+trainCart70<-dataset[sample,]
+testCart30<-dataset[-sample,]
+trainCart70<-trainCart70[,c(7:10,3,5)]
+testCart30<-testCart30[,c(7:10,3,5)]
+```
+
+
+```{r}
+library(rpart)
+library(rpart.plot)
+
+
+Global_Sales.test=testCart30$Global_Sales
+fit.tree = rpart(Global_Sales~ ., data=trainCart70, method = "class", cp=0)
+fit.tree
+rpart.plot(fit.tree)
+fit.tree$variable.importance
+pred.tree = predict(fit.tree, testCart30, type = "class")
+table(pred.tree,Global_Sales.test)
+printcp(fit.tree)
+```
+
+```{r}
+#Accuracy/precision/sensitivity of model is given by
+accuracy70=((1569+  466 + 1341)/nrow(testCart30))*100
+precision70=(((1569/2535)+(466/636)+(1341/1536))/3)*100
+sensitivity70=(((1569/1575)+(321/1529)+(875/1603))/3)*100
+specificity70=((((466+166+193+1341)/3132)+((1569+2+96+1341)/3178)+((1033+600+3+323)/3104))/3)*100
+```
+
+
+#CART tree result Evaluation and analysis:
+```{r}
+table=matrix(c(accuracy90,accuracy80,accuracy70
+               ,precision90,precision80,precision70,
+               sensitivity90,sensitivity80,sensitivity70,
+               specificity90,specificity80,specificity70
+               ),ncol=3,byrow=TRUE)
+colnames(table)=c('90% train,10% test','80% train,20% test','70% train,30% test')
+rownames(table)=c("accuracy","precision","sensitivity","specificity")
+finaltable=as.table(table)
+finaltable
+```
+
+# Evaluation and comparison
+First we used the above partitioning for the training set/testing set;An evaluation of a model's  based on one dataset may not be accurate. Different sets of training and test data help to obtain a more sound evaluation of the model.
+
+From the result above we can see that the 70% training set, 30% testing set gave the best accuracy but we don't only judge the accuracy, because if we do that we may use an imbalanced set, let's compare the sensitivity/specificity too, we can notice that the sensitivity  of the 70% training set, 30% testing set is pretty low(58%) so it has imbalance issues so even if the accuracy is high we won't consider it as the best model.
+We will see the results of the second best accuracy set which is:80% training set, 20% testing set,
+the sensitivity/specificity s pretty high(71%, and 86% respectively), even higher than the 90% training set, 10% testing set(70%, and 86% respectively), so it's pretty balanced. the ratio of true positives to the total number of predicted positives (precision)=73.5% which means only 26.5% is classified as FP!.
+
+
+
+# Findings
+
+
+I will start explaining the results of the best partition(80% training set, 20% testing set)
+1-We can notice from the tree that it peridicted for the 3 levels of global_Sales a total of:
+[0,000967]:52%
+[0.000967,0.00387]:16%
+[0.00387,1]:32%
+We can notice that a range of Global_sales with [0,000967] is the norm for most of the games, while being in the middle is not common, most of our dataset fells on the lowest or highest of predicted Global_sales.
+
+1-if NA_Sales=[0.00386,1] and EU_Sales=[0.00207,1]  then Global_Sales=[0.00387,1], Games has a high Global_Sales  because their high  EU_Sales and NA_Sales  range of sales , so video games company need to focus on those two regions if they want to improve their Global sales.
+
+you can also acheive high Global_Sales by focusing on keeping your sales on these regions as follow:
+
+2-if NA_Sales=[0.00386,1] and EU_Sales=[0,0.00207] and Other_Sales=[0.00189,1] then you will have a high sales, You can keep the NA_Sales and Other_Sales region high while ignoring EU_Sales to also acheive high Global_Sales.
+
+3-if NA_Sales=[0,000482),[0.000482,00386] and other_Sales=[0.00189,1], and NA_Sales=[0,000482) and EU_Sales=[0,0.00207) then you will have high Gloabl_Sales.
+
+You can also have low NA_Sales and EU_Sales, while having Other_Sales high to achieve high Global_Sales.
+
 
 
 
