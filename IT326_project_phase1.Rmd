@@ -514,7 +514,7 @@ datasetClustering$Genre <- as.numeric(as.character(datasetClustering$Genre))
 View(datasetClustering)
 ```
 
-After preprocessing the data now we will start performin the clustring technique on the processsed dataset.
+After preprocessing the data now we will start performing the clustering technique on the processed dataset.
 
 
 
