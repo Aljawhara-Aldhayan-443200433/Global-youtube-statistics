@@ -465,10 +465,237 @@ We performed balancing and discritization because we notice from the graphs that
 
 The goal of classification is to build a model or algorithm that can generalize patterns and relationships observed in the training data to make accurate predictions on unseen data. The model learns from the labeled examples in the training set, where each example consists of a set of input features and a corresponding known class label.
 
-# Information gain: 
+# information gain(ID3 alogrithm)
+The ID3 (Iterative Dichotomiser 3) algorithm utilizes information gain as a key criterion for splitting nodes in the tree. It was developed by Ross Quinlan and is one of the earliest algorithms for building decision trees.In order to construct a decision tree, each node must be selected in a recursive manner for the maximum Information Gain. At each step, the algorithm selects the attribute with the highest Information Gain to split the data, and this process continues until a stopping criterion is reached.
 
-By using Information Gain to select attributes for splitting, the decision tree algorithm aims to create a tree that maximizes the information provided by the attributes about the class labels, leading to effective classification.
+# ID3 alogrithm:90% taining set, 10% testing set
+```{r}
+set.seed(15687)
+ind <- sample(2, nrow(dataset), replace=TRUE, prob=c(0.9, 0.1))
+trainData <- dataset[ind==1,]
+testData <- dataset[ind==2,]
+library(party)
+myFormula <- Global_Sales ~  NA_Sales +EU_Sales+Other_Sales+Genre+Platform
+dataset_ctree <- ctree(myFormula, data=trainData)
+ 
+table(predict(dataset_ctree), trainData$Global_Sales)
+print(dataset_ctree)
+plot(dataset_ctree,type="simple")
+plot(dataset_ctree)
+ 
+testPred <- predict(dataset_ctree, newdata = testData)
+result<-table(testPred, testData$Global_Sales)
+result
+ 
+library(e1071)
+library(caret)
+ 
+co_result <- confusionMatrix(result)
+print(co_result)
+ 
+acc90ctree <- co_result$overall["Accuracy"]
+acc90ctree=acc90ctree*100
+```
 
+```{r}
+precision90ctree=(((486/808)+(243/919)+(422/974))/3)*100
+sensitivity90ctree=(( 0.8764+0.4559+0.8423)/3)*100
+specificity90ctree=((0.7814+0.8879+0.9128)/3)*100
+```
+
+# ID3 alogrithm:80% taining set, 20% testing set
+```{r}
+set.seed(15687)
+ind <- sample(2, nrow(dataset), replace=TRUE, prob=c(0.8, 0.2))
+trainData <- dataset[ind==1,]
+testData <- dataset[ind==2,]
+library(party)
+myFormula <- Global_Sales ~  NA_Sales +EU_Sales+Other_Sales+Genre+Platform
+dataset_ctree <- ctree(myFormula, data=trainData)
+ 
+table(predict(dataset_ctree), trainData$Global_Sales)
+print(dataset_ctree)
+plot(dataset_ctree,type="simple")
+plot(dataset_ctree)
+ 
+testPred <- predict(dataset_ctree, newdata = testData)
+result<-table(testPred, testData$Global_Sales)
+result
+ 
+library(e1071)
+library(caret)
+ 
+co_result <- confusionMatrix(result)
+print(co_result)
+
+acc80ctree <- co_result$overall["Accuracy"]
+acc80ctree=acc80ctree*100
+```
+
+```{r}
+precision80ctree=(((838/1746)+(578/1799)+(903/1974))/3)*100
+sensitivity80ctree=(( 0.7766+0.5479+ 0.8471)/3)*100
+specificity80ctree=(( 0.8232+0.8387+0.9250)/3)*100
+```
+
+
+
+
+# ID3 alogrithm:70% taining set, 30% testing set
+```{r}
+set.seed(15687)
+ind <- sample(2, nrow(dataset), replace=TRUE, prob=c(0.7, 0.3))
+trainData <- dataset[ind==1,]
+testData <- dataset[ind==2,]
+library(party)
+myFormula <- Global_Sales ~  NA_Sales +EU_Sales+Other_Sales+Genre+Platform
+dataset_ctree <- ctree(myFormula, data=trainData)
+ 
+table(predict(dataset_ctree), trainData$Global_Sales)
+print(dataset_ctree)
+plot(dataset_ctree,type="simple")
+plot(dataset_ctree)
+ 
+testPred <- predict(dataset_ctree, newdata = testData)
+result<-table(testPred, testData$Global_Sales)
+result
+ 
+library(e1071)
+library(caret)
+ 
+co_result <- confusionMatrix(result)
+print(co_result)
+
+acc70ctree <- co_result$overall["Accuracy"]
+acc70ctree=acc70ctree*100
+```
+
+```{r}
+precision70ctree=((( 1341/2558)+( 811/2777)+(1362/2974))/3)*100
+sensitivity70ctree=((0.8268+0.5104+0.8598)/3)*100
+specificity70ctree=((0.8062+0.8662+ 0.9262)/3)*100
+
+```
+
+# Evaluation and comparison
+```{r}
+table=matrix(c(acc90ctree,acc80ctree,acc70ctree
+               ,precision90ctree,precision80ctree,precision70ctree,
+               sensitivity90ctree,sensitivity80ctree,sensitivity70ctree,
+               specificity90ctree,specificity80ctree,specificity70ctree
+               ),ncol=3,byrow=TRUE)
+colnames(table)=c('90% train,10% test','80% train,20% test','70% train,30% test')
+rownames(table)=c("accuracy","precision","sensitivity","specificity")
+finaltable=as.table(table)
+finaltable
+```
+
+he accuracy measurement is not always enough to determine the best split of dataset to create the model.
+starting with the highest accuracy(70% training,30% test)
+we can see that the sensitivity is very close to the accuracy so it’s balanced and we might consider it good choice for the model
+
+Then we have (90% training,10% test) 
+It has a Precision=43.3% which means our model correctly predict more than 43% out of all the predictions made.
+and that percentage is higher than all other the splits which is a good thing.
+
+Lastly (80% training,20% test) 
+If classifier predicts positive, you can’t trust it since the precision=41.9% and it also has the lowest Precision among other split(41.9%).
+so it’s not really a good choice for the model
+
+
+#C5.0 method
+In decision tree algorithms, such as the C5.0 algorithm, the Gain Ratio is used to measure the effectiveness of splitting nodes during the tree-building process. Information gain is one of the limitations of other splitting criteria, which is why the Gain Ratio was developed.
+Using the Gain Ratio at each node of the decision tree, the C5.0 algorithm, an extension of C4.5, determines the best attribute to split on. Gain Ratios are particularly useful when dealing with attributes with different categories or levels
+# C5.0 tree: 80% traning set, and 20% testing set
+```{r}
+library(remotes)
+library("C50")
+library(printr)
+set.seed(15687)
+ind <- sample(2, nrow(dataset), replace=TRUE, prob=c(0.8, 0.2))
+trainData <- dataset[ind==1,]
+testData <- dataset[ind==2,]
+myFormula <- Global_Sales ~  NA_Sales +EU_Sales+Other_Sales+Genre+Platform
+model <- C5.0(myFormula, data=trainData)
+plot(model)
+pred <- predict(object=model, newdata=testData, type="class")
+result<-table(pred, testData$Global_Sales)
+co_result <- confusionMatrix(result)
+print(co_result)
+acc80C50 <- co_result$overall["Accuracy"]
+acc80C50=acc80C50*100
+```
+
+```{r}
+precision80C50=((( 912/1700)+( 541/1874)+(894/1982))/3)*100
+sensitivity80C50=((0.8452+0.5128+0.8386)/3)*100
+specificity80C50=((0.8015+0.8695+0.9288)/3)*100
+```
+
+# C5.0 tree: 70% traning set, and 30% testing set
+```{r}
+library(remotes)
+library("C50")
+library(printr)
+set.seed(15687)
+ind <- sample(2, nrow(dataset), replace=TRUE, prob=c(0.7, 0.3))
+trainData <- dataset[ind==1,]
+testData <- dataset[ind==2,]
+myFormula <- Global_Sales ~  NA_Sales +EU_Sales+Other_Sales+Genre+Platform
+model <- C5.0(myFormula, data=trainData)
+plot(model)
+results <- predict(object=model, newdata=testData, type="class")
+result<-table(results, testData$Global_Sales)
+co_result <- confusionMatrix(result)
+print(co_result)
+acc70C50 <- co_result$overall["Accuracy"]
+acc70C50=acc70C50*100
+```
+
+```{r}
+precision70C50=((( 1331/2594)+( 828/2765)+(1368/2963))/3)*100
+sensitivity70C50=(( 0.8206+0.5211+0.8636)/3)*100
+specificity70C50=((0.8175+0.8624+0.9228)/3)*100
+```
+
+# C5.0 tree: 90% traning set, and 10% testing set
+```{r}
+library(remotes)
+library("C50")
+library(printr)
+set.seed(15687)
+ind <- sample(2, nrow(dataset), replace=TRUE, prob=c(0.9, 0.1))
+trainData <- dataset[ind==1,]
+testData <- dataset[ind==2,]
+myFormula <- Global_Sales ~  NA_Sales +EU_Sales+Other_Sales+Genre+Platform
+model <- C5.0(myFormula, data=trainData)
+plot(model)
+results <- predict(object=model, newdata=testData, type="class")
+result<-table(results, testData$Global_Sales)
+co_result <- confusionMatrix(result)
+print(co_result)
+acc90C50 <- co_result$overall["Accuracy"]
+acc90C50=acc90C50*100
+```
+
+
+```{r}
+precision90C50=((( 433/828)+( 273/870)+(412/988))/3)*100
+sensitivity90C50=(( 0.8109+ 0.5122+ 0.8224)/3)*100
+specificity90C50=(( 0.8008+0.8406+0.9260)/3)*100
+```
+# Evaluation and comparison
+```{r}
+table=matrix(c(acc90C50,acc80C50,acc70C50
+               ,precision90C50,precision80C50,precision70C50,
+               sensitivity90C50,sensitivity80C50,sensitivity70C50,
+               specificity90C50,specificity80C50,specificity70C50
+               ),ncol=3,byrow=TRUE)
+colnames(table)=c('90% train,10% test','80% train,20% test','70% train,30% test')
+rownames(table)=c("accuracy","precision","sensitivity","specificity")
+finaltable=as.table(table)
+finaltable
+```
 
 
 
