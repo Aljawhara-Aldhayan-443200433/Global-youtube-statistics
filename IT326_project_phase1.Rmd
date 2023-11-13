@@ -1,0 +1,1054 @@
+---
+title: "Global video games sales"
+output: html_notebook
+---
+
+
+
+# Phase1:
+# Proplem:
+We live in a time when video games are extremely popular. The global video game market continues to grow year-on-year, and the industry is now valued at over $100 billion worldwide. With technology continuously pushing the boundaries, video games have only become more popular and more high-quality. Gameplay mechanics, cutting-edge graphics, and intricate storylines make today's games more immersive than ever before. We chose this dataset to gain insights on the popularity of upcoming games. 
+
+
+# Class label:
+Popular' is our class label, we will use Global_Sales attribute to predict whether a game will sell 1000000 or more globally. 
+
+
+# Data Mining Task:
+Our data mining task is to predict the popularity of upcoming games using regression.
+
+
+# Description of the dataset:
+The dataset provided by vgchartz.com supply us with a valuable resource to explore the platforms and genres of the top 16599 global video games. Through it, we can analyze the most popular platforms and genres that are influencing global sales, and detectr how regions' sales affect global sales. 
+
+# Our goal:
+
+Our goal  from studying this dataset is to utilize regression techniques on the input data to make predictions about the popularity of upcoming games.
+
+# Source and link:
+Source: Kaggle
+
+URL link: https://www.kaggle.com/datasets/gregorut/videogamesales
+
+
+
+
+# Attributes description:
+
+
+| **Attributes name** | **Description**                   | **Data type** | 
+|-----------------------------|-------------------------------------|---------------------|
+|Rank               | Ranking of the game based on global sales. | Numeric       |
+| Name            | Name of the game. | Nominal       | 
+| Platform      | Platform the game was released on. | Nominal       | 
+| Year               | Year the game was released. | Ordinal       | 
+| Genre            | Genre of the game | Nominal       | 
+| Publisher      | Publisher of the game. | Nominal       | 
+| NA_Sales      | Sales of the game in North America | Numeric (ratio-scaled)       | 
+| EU_Sales       | Sales of the game in Europe | Numeric (ratio-scaled)        | 
+| JP_Sales        | Sales of the game in Japan | Numeric (ratio-scaled)        | 
+| Other_Sales | Sales of the game in other regions | Numeric (ratio-scaled)        | 
+| Global_Sales  | Total sales of the game worldwide | Numeric (ratio-scaled)     |     
+
+
+
+
+
+
+# loading libraries needed for our data mining tasks:
+```{r}
+library(outliers) 
+library(dplyr)
+library(Hmisc)
+library(ggplot2)
+library(mlbench)
+library(caret)
+options(max.print=9999999)
+```
+
+
+
+
+
+# Importing our dataset:
+```{r}
+dataset=read.csv("Dataset/vgsales.csv")
+```
+
+
+
+
+# General info about our dataset:
+
+checking number of rows and columns, and cheking dimensionality and coulumns names:
+```{r}
+nrow(dataset)
+ncol(dataset)
+dim(dataset)
+names(dataset)
+```
+
+
+
+
+Dataset structure:
+```{r}
+str(dataset)
+```
+
+
+
+sample of raw dataset(first 10 rows):
+```{r}
+head(dataset, 10)
+```
+
+sample of raw dataset(last 10 rows):
+```{r}
+tail(dataset, 10)
+```
+
+Five number summary of each attribute in our dataset:
+```{r}
+summary(dataset)
+```
+
+variance of numeric data:
+```{r}
+var(dataset$NA_Sales)
+var(dataset$EU_Sales)
+var(dataset$JP_Sales)
+var(dataset$Other_Sales)
+var(dataset$Global_Sales)
+```
+
+
+
+
+
+
+# Graphs:
+
+```{r}
+dataset2 <- dataset %>% sample_n(50)
+tab <- dataset2$Platform %>% table()
+precentages <- tab %>% prop.table() %>% round(3) * 100 
+txt <- paste0(names(tab), '\n', precentages, '%') 
+
+pie(tab, labels=txt , main = "Pie chart of Platform") 
+
+```
+
+This pie chart illustrate platforms of global video games , We notice from the pie chart of platform attribute that releasing a game for PS users will increase the popularity of the game since it is the most common platform among gamers. 
+
+
+
+
+
+```{r}
+# coloring barplot and adding text
+tab<-dataset$Genre %>% table() 
+
+precentages<-tab %>% prop.table() %>% round(3)*100 
+
+txt<-paste0(names(tab), '\n',precentages,'%') 
+
+bb <- dataset$Genre %>% table() %>% barplot(axisnames=F, main = "Barplot for Popular genres ",ylab='count',col=c('pink','blue','lightblue','green','lightgreen','red','orange','red','grey','yellow','azure','olivedrab')) 
+
+text(bb,tab/2,labels=txt,cex=1.5) 
+```
+This barplot illustrates popularity of global video games genres ,In terms of genre, action games are the most popular, followed by sports and music games. It is safe to assume that a high number of genres of this nature exist due to their popularity and sales.
+
+
+
+
+
+```{r}
+boxplot(dataset$NA_Sales , main="
+BoxPlot for NA_Sales")
+```
+The boxplot of the NA_Sales  (Sales of the game in north America) attribute indicates that the values are close to each other ,and there are a lot of outliers since the dataset represents all the north America sales of video games.
+
+```{r}
+boxplot(dataset$EU_Sales, main="
+ BoxPlot for EU_Sales")
+```
+The boxplot of the EU_Sales (sales of the game in Europe) attribute indicates that the values are close to each other, and there are a lot of outliers since the dataset represents all the Europe sales of video games.
+
+```{r}
+boxplot(dataset$JP_Sales , main="
+ BoxPlot for JP_Sales")
+```
+The boxplot of the JP_Sales (sales of the game in Japan) attribute indicates that the values are close to each other, and there are a lot of outliers since the dataset represents all the Japan sales of video games.
+
+
+```{r}
+boxplot(dataset$Other_Sales , main="
+ BoxPlot for Other_Sales") 
+```  
+
+The boxplot of the Other-sales attribute indicate that the values are close to each other ,and there is a lot of outliers since the dataset represents the global sales of video games. 
+
+
+
+
+```{r}
+boxplot(dataset$Global_Sales , main="BoxPlot for Global_Sales")
+
+```  
+The boxplot of the Global-sales attribute indicate that the values are close to each other ,and there is a lot of outliers since the dataset represents the global sales of video games. 
+
+
+
+```{r}
+qplot(data = dataset, x=Global_Sales,y=Genre,fill=I("yellow"),width=0.5 ,geom = "boxplot" , main = "BoxPlots for genre and Global_Sales")
+```
+
+In the boxplot we can see that all the genres have Glob_ sales close to each other, but we notice an outlier that reaches more than 80 Glob_ sales which is a game with genre sports. 
+
+```{r}
+dataset$Year %>% table() %>% barplot( main = "Barplot for year")
+```
+
+ The barplot of year illustrate that the number of video games were low from 1980 until 2000 , then number of games increased to more than 1200 till 2012.
+
+
+```{r}
+pairs(~NA_Sales + EU_Sales + JP_Sales + Other_Sales + Global_Sales, data = dataset,
+      main = "Sales Scatterplot")
+```    
+We used Scatterplot to determine the type of correlation we have between the sales; we can see that the majority have positive correlation with each other. 
+ 
+ 
+      
+# (Pre - processing):
+
+# Varaible transformation:
+```{r}
+dataset$Rank=as.character(dataset$Rank)
+```
+We transformed the Rank from numric to char,because we will use them as ordinal data.
+
+# Null checking:
+we checked nulls values to know how many nulls values we have, so we can determine how we will deal with them.
+```{r}
+sum(is.na(dataset$Rank))
+NullRank<-dataset[dataset$Rank=="N/A",]
+NullRank
+```
+checking for nulls in Rank (there is no nulls)
+```{r}
+sum(is.na(dataset$Name))
+NullName<-dataset[dataset$Name=="N/A",]
+NullName
+```
+
+checking for nulls in name (there is no nulls)
+
+```{r}
+sum(is.na(dataset$Platform))
+NullPlatform<-dataset[dataset$Platform=="N/A",]
+
+
+```
+checking for nulls in Platform(there is no nulls)
+
+```{r}
+sum(is.na(dataset$Year))
+NullYear<-dataset[dataset$Year=="N/A",]
+NullYear
+```
+checking for nulls in year
+we won't delete the null and we will leave them as global constant because we want the sales data out of them.
+
+```{r}
+sum(is.na(dataset$Genre))
+NullGenre<-dataset[dataset$Genre=="N/A",]
+NullGenre
+```
+checking for nulls in Genre(there is no nulls)
+
+```{r}
+sum(is.na(dataset$Publisher))
+NullPublisher<-dataset[dataset$Publisher=="N/A",]
+NullPublisher
+```
+checking for nulls in Publisher.
+we won't delete the null and we will leave them as global constant as it is because we want the sales data of them.
+
+```{r}
+sum(is.na(dataset$NA_Sales))
+NullNA_Sales<-dataset[dataset$NA_Sales=="N/A",]
+NullNA_Sales
+```
+checking for nulls in NA_Sales (there is no nulls)
+
+```{r}
+sum(is.na(dataset$EU_Sales))
+NullEU_Sales<-dataset[dataset$EU_Sales=="N/A",]
+NullEU_Sales
+```
+checking for nulls in EU_Sales (there is no nulls)
+
+```{r}
+sum(is.na(dataset$JP_Sales))
+NullJP_Sales<-dataset[dataset$JP_Sales=="N/A",]
+NullJP_Sales
+```
+checking for nulls in JP_Sales (there is no nulls)
+
+
+```{r}
+sum(is.na(dataset$Other_Sales))
+NullOther_Sales<-dataset[dataset$Other_Sales=="N/A",]
+
+
+```
+There is no null values in the other_sales.
+
+```{r}
+sum(is.na(dataset$Global_Sales))
+NullGlobal_Sales<-dataset[dataset$Global_Saless=="N/A",]
+
+
+```
+There is no null values in the Global_Sales.
+
+# Encoding:
+We will encode our categorical data since most machine learning algorithms work with numbers rather than text.
+
+```{r}
+dataset$Platform=factor(dataset$Platform,levels=c("2600","3DO","3DS","DC","DS","GB","GBA","GC","GEN","GG","N64","NES","NG","PC","PCFX","PS","PS2","PS3","PS4","PSP","PSV","SAT","SCD","SNES","TG16","Wii","WiiU","WS","X360","XB","XOne"), labels=c(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31))
+```
+this column will be encoded to facilitate our data mining task.
+
+```{r}
+dataset$Genre=factor(dataset$Genre,levels=c("Action","Adventure","Fighting","Platform","Puzzle","Racing","Role-Playing","Shooter","Simulation","Sports","Strategy","Misc"),labels=c(1,2,3,4,5,6,7,8,9,10,11,12))
+```
+Since most machine learning algorithms work with numbers and not with text or categorical variables, this column will be encoded to facilitate our data mining task.
+
+# Outliers:
+Analyses and statistical models can be ruined by outliers, making it difficult to detect a true effect. Therefore, we are checking for them and removing them if we find any.
+
+outlier of NA_Sales
+```{r}
+OutNA_Sales = outlier(dataset$NA_Sales, logical =TRUE)
+sum(OutNA_Sales)
+Find_outlier = which(OutNA_Sales ==TRUE, arr.ind = TRUE)
+
+```
+outlier of EU_Sales
+```{r}
+OutEU_Sales = outlier(dataset$EU_Sales, logical =TRUE)
+sum(OutEU_Sales)
+Find_outlier = which(OutEU_Sales ==TRUE, arr.ind = TRUE)
+```
+outlier of JP_Sales
+```{r}
+OutJP_Sales = outlier(dataset$JP_Sales, logical =TRUE)
+sum(OutJP_Sales)
+Find_outlier = which(OutJP_Sales ==TRUE, arr.ind = TRUE)
+```
+
+outlier of other_sales 
+```{r}
+OutOS=outlier(dataset$Other_Sales, logical=TRUE)  
+sum(OutOS)  
+Find_outlier=which(OutOS==TRUE, arr.ind=TRUE)  
+
+```
+
+
+outlier of Global_sales 
+
+```{r}
+OutGS=outlier(dataset$Global_Sales, logical=TRUE)  
+sum(OutGS)  
+Find_outlier=which(OutGS==TRUE, arr.ind=TRUE)  
+
+```
+
+
+
+# Remove outliers 
+```{r}
+dataset= dataset[-Find_outlier,]
+```
+
+
+
+# Normalization:
+The normalization of data will improve the performance of many machine learning algorithms by accounting for differences in the scale of the input features.
+
+Dataset before normalization:
+```{r}
+datsetWithoutNormalization<-dataset
+```
+
+
+```{r}
+normalize <- function(x) {return ((x - min(x)) / (max(x) - min(x)))}
+dataset$NA_Sales<-normalize(datsetWithoutNormalization$NA_Sales)
+dataset$EU_Sales<-normalize(datsetWithoutNormalization$EU_Sales)
+dataset$JP_Sales<-normalize(datsetWithoutNormalization$JP_Sales)
+dataset$Other_Sales<-normalize(datsetWithoutNormalization$Other_Sales)
+dataset$Global_Sales<-normalize(datsetWithoutNormalization$Global_Sales)
+```
+We chose min-max normalization instead of z-score normalization because min-max transform the data into a specific range, which enhances its suitability for visualization and comparison. Additionally, it simplifies the process of assessing attribute importance and their contributions to the model.
+
+
+
+
+
+# Feautre selection:
+
+Our class label (popular) refers to Global_Sales.because we have multiple regions sales we chose to evaluate each region sales based on their importance to (global_sales) column,and those that are less important will be deleted from the dataset.
+
+
+Use roc_curve area as score
+```{r}
+roc_imp <- filterVarImp(x = dataset[,7:10], y = dataset$Global_Sales)
+```
+
+
+Sort the score in decreasing order
+```{r}
+roc_imp <- data.frame(cbind(variable = rownames(roc_imp), score = roc_imp[,1]))
+roc_imp$score <- as.double(roc_imp$score)
+roc_imp[order(roc_imp$score,decreasing = TRUE),]
+```
+
+
+we will remove the (JP_Sales) because it is of low importance to our class_label(Global_Sales)
+```{r}
+dataset<- dataset[,-9]
+```
+# Dataset balncing and discritization:
+```{r}
+#Discritization
+
+dataBeforDiscertize=(dataset[,7:10])
+library("arules")
+dataAfterDiscertize=discretizeDF(
+dataBeforDiscertize)
+unique(dataAfterDiscertize[,1])
+unique(dataAfterDiscertize[,2])
+unique(dataAfterDiscertize[,3])
+unique(dataAfterDiscertize[,4])
+levels(dataAfterDiscertize$NA_Sales)<-c("low","medium","high")
+levels(dataAfterDiscertize$EU_Sales)<-c("low","high")
+levels(dataAfterDiscertize$Other_Sales)<-c("low","high")
+levels(dataAfterDiscertize$Global_Sales)<-c("low","medium","high")
+
+#Balancing
+
+library(groupdata2)
+dataset<-downsample(dataset,cat_col="Global_Sales")
+
+
+```
+
+
+# Dataset after pre-processing:
+```{r}
+print(dataset)
+```
+
+We performed balancing and discritization because we notice from the graphs that our dataset is inbalanced.
+
+
+
+
+# Data Mining Techniques:
+
+# Classification:
+
+The goal of classification is to build a model or algorithm that can generalize patterns and relationships observed in the training data to make accurate predictions on unseen data. The model learns from the labeled examples in the training set, where each example consists of a set of input features and a corresponding known class label.
+
+# information gain(ID3 alogrithm)
+The ID3 (Iterative Dichotomiser 3) algorithm utilizes information gain as a key criterion for splitting nodes in the tree. It was developed by Ross Quinlan and is one of the earliest algorithms for building decision trees.In order to construct a decision tree, each node must be selected in a recursive manner for the maximum Information Gain. At each step, the algorithm selects the attribute with the highest Information Gain to split the data, and this process continues until a stopping criterion is reached.
+
+# ID3 alogrithm:90% taining set, 10% testing set
+```{r}
+set.seed(15687)
+ind <- sample(2, nrow(dataset), replace=TRUE, prob=c(0.9, 0.1))
+trainData <- dataset[ind==1,]
+testData <- dataset[ind==2,]
+library(party)
+myFormula <- Global_Sales ~  NA_Sales +EU_Sales+Other_Sales+Genre+Platform
+dataset_ctree <- ctree(myFormula, data=trainData)
+ 
+table(predict(dataset_ctree), trainData$Global_Sales)
+print(dataset_ctree)
+plot(dataset_ctree,type="simple")
+plot(dataset_ctree)
+ 
+testPred <- predict(dataset_ctree, newdata = testData)
+result<-table(testPred, testData$Global_Sales)
+result
+ 
+library(e1071)
+library(caret)
+ 
+co_result <- confusionMatrix(result)
+print(co_result)
+ 
+acc90ctree <- co_result$overall["Accuracy"]
+acc90ctree=acc90ctree*100
+```
+
+```{r}
+precision90ctree=(((486/808)+(243/919)+(422/974))/3)*100
+sensitivity90ctree=(( 0.8764+0.4559+0.8423)/3)*100
+specificity90ctree=((0.7814+0.8879+0.9128)/3)*100
+```
+
+# ID3 alogrithm:80% taining set, 20% testing set
+```{r}
+set.seed(15687)
+ind <- sample(2, nrow(dataset), replace=TRUE, prob=c(0.8, 0.2))
+trainData <- dataset[ind==1,]
+testData <- dataset[ind==2,]
+library(party)
+myFormula <- Global_Sales ~  NA_Sales +EU_Sales+Other_Sales+Genre+Platform
+dataset_ctree <- ctree(myFormula, data=trainData)
+ 
+table(predict(dataset_ctree), trainData$Global_Sales)
+print(dataset_ctree)
+plot(dataset_ctree,type="simple")
+plot(dataset_ctree)
+ 
+testPred <- predict(dataset_ctree, newdata = testData)
+result<-table(testPred, testData$Global_Sales)
+result
+ 
+library(e1071)
+library(caret)
+ 
+co_result <- confusionMatrix(result)
+print(co_result)
+
+acc80ctree <- co_result$overall["Accuracy"]
+acc80ctree=acc80ctree*100
+```
+
+```{r}
+precision80ctree=(((838/1746)+(578/1799)+(903/1974))/3)*100
+sensitivity80ctree=(( 0.7766+0.5479+ 0.8471)/3)*100
+specificity80ctree=(( 0.8232+0.8387+0.9250)/3)*100
+```
+
+
+
+
+# ID3 alogrithm:70% taining set, 30% testing set
+```{r}
+set.seed(15687)
+ind <- sample(2, nrow(dataset), replace=TRUE, prob=c(0.7, 0.3))
+trainData <- dataset[ind==1,]
+testData <- dataset[ind==2,]
+library(party)
+myFormula <- Global_Sales ~  NA_Sales +EU_Sales+Other_Sales+Genre+Platform
+dataset_ctree <- ctree(myFormula, data=trainData)
+ 
+table(predict(dataset_ctree), trainData$Global_Sales)
+print(dataset_ctree)
+plot(dataset_ctree,type="simple")
+plot(dataset_ctree)
+ 
+testPred <- predict(dataset_ctree, newdata = testData)
+result<-table(testPred, testData$Global_Sales)
+result
+ 
+library(e1071)
+library(caret)
+ 
+co_result <- confusionMatrix(result)
+print(co_result)
+
+acc70ctree <- co_result$overall["Accuracy"]
+acc70ctree=acc70ctree*100
+```
+
+```{r}
+precision70ctree=((( 1341/2558)+( 811/2777)+(1362/2974))/3)*100
+sensitivity70ctree=((0.8268+0.5104+0.8598)/3)*100
+specificity70ctree=((0.8062+0.8662+ 0.9262)/3)*100
+
+```
+
+# Evaluation and comparison
+```{r}
+table=matrix(c(acc90ctree,acc80ctree,acc70ctree
+               ,precision90ctree,precision80ctree,precision70ctree,
+               sensitivity90ctree,sensitivity80ctree,sensitivity70ctree,
+               specificity90ctree,specificity80ctree,specificity70ctree
+               ),ncol=3,byrow=TRUE)
+colnames(table)=c('90% train,10% test','80% train,20% test','70% train,30% test')
+rownames(table)=c("accuracy","precision","sensitivity","specificity")
+finaltable=as.table(table)
+finaltable
+```
+
+he accuracy measurement is not always enough to determine the best split of dataset to create the model.
+starting with the highest accuracy(70% training,30% test)
+we can see that the sensitivity is very close to the accuracy so it’s balanced and we might consider it good choice for the model
+
+Then we have (90% training,10% test) 
+It has a Precision=43.3% which means our model correctly predict more than 43% out of all the predictions made.
+and that percentage is higher than all other the splits which is a good thing.
+
+Lastly (80% training,20% test) 
+If classifier predicts positive, you can’t trust it since the precision=41.9% and it also has the lowest Precision among other split(41.9%).
+so it’s not really a good choice for the model
+
+
+#C5.0 method
+In decision tree algorithms, such as the C5.0 algorithm, the Gain Ratio is used to measure the effectiveness of splitting nodes during the tree-building process. Information gain is one of the limitations of other splitting criteria, which is why the Gain Ratio was developed.
+Using the Gain Ratio at each node of the decision tree, the C5.0 algorithm, an extension of C4.5, determines the best attribute to split on. Gain Ratios are particularly useful when dealing with attributes with different categories or levels
+# C5.0 tree: 80% traning set, and 20% testing set
+```{r}
+library(remotes)
+library("C50")
+library(printr)
+set.seed(15687)
+ind <- sample(2, nrow(dataset), replace=TRUE, prob=c(0.8, 0.2))
+trainData <- dataset[ind==1,]
+testData <- dataset[ind==2,]
+myFormula <- Global_Sales ~  NA_Sales +EU_Sales+Other_Sales+Genre+Platform
+model <- C5.0(myFormula, data=trainData)
+plot(model)
+pred <- predict(object=model, newdata=testData, type="class")
+result<-table(pred, testData$Global_Sales)
+co_result <- confusionMatrix(result)
+print(co_result)
+acc80C50 <- co_result$overall["Accuracy"]
+acc80C50=acc80C50*100
+```
+
+```{r}
+precision80C50=((( 912/1700)+( 541/1874)+(894/1982))/3)*100
+sensitivity80C50=((0.8452+0.5128+0.8386)/3)*100
+specificity80C50=((0.8015+0.8695+0.9288)/3)*100
+```
+
+# C5.0 tree: 70% traning set, and 30% testing set
+```{r}
+library(remotes)
+library("C50")
+library(printr)
+set.seed(15687)
+ind <- sample(2, nrow(dataset), replace=TRUE, prob=c(0.7, 0.3))
+trainData <- dataset[ind==1,]
+testData <- dataset[ind==2,]
+myFormula <- Global_Sales ~  NA_Sales +EU_Sales+Other_Sales+Genre+Platform
+model <- C5.0(myFormula, data=trainData)
+plot(model)
+results <- predict(object=model, newdata=testData, type="class")
+result<-table(results, testData$Global_Sales)
+co_result <- confusionMatrix(result)
+print(co_result)
+acc70C50 <- co_result$overall["Accuracy"]
+acc70C50=acc70C50*100
+```
+
+```{r}
+precision70C50=((( 1331/2594)+( 828/2765)+(1368/2963))/3)*100
+sensitivity70C50=(( 0.8206+0.5211+0.8636)/3)*100
+specificity70C50=((0.8175+0.8624+0.9228)/3)*100
+```
+
+# C5.0 tree: 90% traning set, and 10% testing set
+```{r}
+library(remotes)
+library("C50")
+library(printr)
+set.seed(15687)
+ind <- sample(2, nrow(dataset), replace=TRUE, prob=c(0.9, 0.1))
+trainData <- dataset[ind==1,]
+testData <- dataset[ind==2,]
+myFormula <- Global_Sales ~  NA_Sales +EU_Sales+Other_Sales+Genre+Platform
+model <- C5.0(myFormula, data=trainData)
+plot(model)
+results <- predict(object=model, newdata=testData, type="class")
+result<-table(results, testData$Global_Sales)
+co_result <- confusionMatrix(result)
+print(co_result)
+acc90C50 <- co_result$overall["Accuracy"]
+acc90C50=acc90C50*100
+```
+
+
+```{r}
+precision90C50=((( 433/828)+( 273/870)+(412/988))/3)*100
+sensitivity90C50=(( 0.8109+ 0.5122+ 0.8224)/3)*100
+specificity90C50=(( 0.8008+0.8406+0.9260)/3)*100
+```
+# Evaluation and comparison
+```{r}
+table=matrix(c(acc90C50,acc80C50,acc70C50
+               ,precision90C50,precision80C50,precision70C50,
+               sensitivity90C50,sensitivity80C50,sensitivity70C50,
+               specificity90C50,specificity80C50,specificity70C50
+               ),ncol=3,byrow=TRUE)
+colnames(table)=c('90% train,10% test','80% train,20% test','70% train,30% test')
+rownames(table)=c("accuracy","precision","sensitivity","specificity")
+finaltable=as.table(table)
+finaltable
+```
+
+
+
+
+# Clustring:
+
+Clustering is a technique used to group similar data points together based on their inherent characteristics or similarities.
+ So our goal of clustering is to identify patterns, structures, or relationships within 
+a dataset without any prior knowledge of the groups or classes that may exist.
+
+
+# 1:Preprossening before clustring 
+
+before starting the clustring process we need to remove the class label since clustring is an unsupervised learning , but before removing the class label We stored it in a varible just in case of further need(We need it to compute Bcubed precision and recall),Then we need to transform each factor coulnm to numeric because it's essential to convert factor variables to numeric ones due to the algorithmic requirements of clustring(Kmeans) and the characteristics of factor variables.
+
+```{r}
+# We stored the class label in a varible just in case of further need(We need it to compute Bcubed precision and recall)
+
+classLabel<-dataset$Global_Sales
+
+```
+
+
+```{r}
+# Removing the classLabel before the clustring process
+datasetClustering<- dataset[,-10]
+```
+
+
+```{r}
+# We removed columns that are not relevant to the clustering process and can distort the result 
+datasetClustering <- dataset[, setdiff(3:9, c(4, 6))]
+View(datasetClustering)
+```
+
+
+```{r}
+
+##converting factors to numric to apply kmeans method , it's essential to convert factor variables to numeric ones due to the algorithmic requirements of K-means and the characteristics of factor variables.
+
+datasetClustering$Platform <- as.numeric(as.character(datasetClustering$Platform))
+datasetClustering$Genre <- as.numeric(as.character(datasetClustering$Genre))
+View(datasetClustering)
+```
+
+After preprocessing the data now we will start performing the clustering technique on the processed dataset.
+
+
+
+
+# 2:Kmeans
+
+We chose K-means clustering as our clustring method because it excels in handling large datasets, offering prompt and easily understandable insights. It is beneficial for exploring data, facilitating the quick detection of potential data clusters.
+
+# 3:Choosing the number of clusters K
+
+# 1-Silhouette method
+This graph depicts the process of finding the optimal number of clusters for a dataset using the Silhouette method. The x-axis represents the number of clusters (k) considered in the analysis, ranging from 1 to 10. The y-axis shows the average Silhouette width, which is a measure of how similar an object is to its own cluster compared to other clusters.
+
+```{r}
+fviz_nbclust(datasetClustering, kmeans, method = "silhouette")+
+  labs(subtitle = "Silhouette method")
+```
+
+The plot shows a peak at k=3, where the average Silhouette score is the highest. This suggests that the data points are, on average, closer to other points in their own cluster and farther from points in other clusters when the data is divided into three clusters. As a result, according to the Silhouette method, k=3 is the optimal number of clusters.
+
+# 2- Elbow method
+The Elbow Method using Within-Cluster Sum of Squares (WSS) is a technique to determine the optimal number of clusters in K-means clustering. It involves running the clustering algorithm for a range of cluster numbers and calculating the WSS for each. WSS is the sum of squared distances of each point to its cluster centroid. As the number of clusters increases, WSS tends to decrease; the goal is to find the point where increasing the number of clusters does not lead to a significant decrease in WSS. This point, visually resembling an elbow on a plot of WSS against the number of clusters, is considered the optimal number of clusters.
+```{r}
+fviz_nbclust(datasetClustering, kmeans, method = "wss") +
+  geom_vline(xintercept = 4, linetype = 2)+
+  labs(subtitle = "Elbow method")
+```
+
+As shown in the above graph , 4 is the value that resembles an elbow in the plot(The turnning point) wich means it is the optimal value of K the we will use in our clustring process.
+
+In conclusion, we will choose K=4 for our clustering process, as it marks the turning point on the Elbow Method curve, indicating an optimal balance in cluster compactness and separation. Additionally, we will utilize K=3 and K=6, as these values maximize the average silhouette width, with K=3 being the primary maximizer and K=6 the secondary. By selecting these specific K values, we aim to achieve a satisfactory level of precision and recall in our clustering analysis, ensuring both the relevance and completeness of the clustered data.
+
+
+
+# k-means clustering, visualization and evaluation
+
+# 1- k=3 
+
+```{r}
+set.seed(5000)
+kmeans.result <- kmeans(datasetClustering, 3)
+
+# print the clusterng result
+kmeans.result
+```
+
+
+
+```{r}
+# visualize clustering
+library(factoextra)
+fviz_cluster(kmeans.result, data = datasetClustering)
+```
+
+```{r}
+#average silhouette for cluster  k=3
+library(cluster)
+avg_sil <- silhouette(kmeans.result$cluster,dist(datasetClustering))
+fviz_silhouette(avg_sil)
+```
+
+```{r}
+#Within-cluster sum of squares wss 
+wss <- kmeans.result$tot.withinss
+print(wss)
+```
+
+```{r}
+#BCubed
+kmeans_cluster <- c(kmeans.result$cluster)
+
+ground_truth <- c(classLabel)
+
+data <- data.frame(cluster = kmeans_cluster, label = ground_truth)
+
+# Function to calculate BCubed precision and recall
+  bcubed <- function(data) {
+  n <- nrow(data)
+  total_precesion <- 0
+  total_recall <- 0
+
+  for (i in 1:n) {
+    cluster <- data$cluster[i]
+    label <- data$label[i]
+    
+# Count the number of items from the same category within the same cluster
+intersection <- sum(data$label[data$cluster == cluster] == label)
+    
+# Count the total number of items in the same cluster
+total_same_cluster <- sum(data$cluster == cluster)
+    
+# Count the total number of items with the same category
+total_same_category <- sum(data$label == label)
+    
+# Calculate precision and recall for the current item and add them to the sums
+total_precesion <- total_precesion + intersection /total_same_cluster
+total_recall <- total_recall + intersection / total_same_category
+  }
+
+  # Calculate average precision and recall
+  precision <- total_precesion / n
+  recall <- total_recall / n
+
+  return(list(precision = precision, recall = recall))
+}
+
+# Calculate BCubed precision and recall
+metrics <- bcubed(data)
+
+# Extract precision and recall from the metrics
+precision <- metrics$precision
+recall <- metrics$recall
+
+# Print the results
+cat("BCubed Precision:", precision, "\n")
+
+cat("BCubed Recall:", recall, "\n")
+```
+
+As the graph of K=3 illustrated , there is a noticeable overlapping between the clusters that effect the cluster performance duo to the similarity between clusters and wide distance in the cluster itself as the high value of wss  indicate (78.5 %) ,the recall value is high which is 1 , the value of precision 0.004823151  is low which can be duo to the presence of outliers ,the value of average silhouette width is 0.55 which is relatively good for the clustering process, Overall, the plot suggests that dividing the data into 3 clusters seems appropriate because the average Silhouette score is high.
+
+
+
+# 2- k=4
+
+```{r}
+set.seed(5000)
+kmeans.result <- kmeans(datasetClustering, 4)
+
+# print the clusterng result
+kmeans.result
+```
+
+
+
+```{r}
+# visualize clustering
+library(factoextra)
+fviz_cluster(kmeans.result, data = datasetClustering)
+```
+
+```{r}
+#average silhouette for cluster  k=4
+library(cluster)
+avg_sil <- silhouette(kmeans.result$cluster,dist(datasetClustering))
+fviz_silhouette(avg_sil)
+```
+
+```{r}
+#Within-cluster sum of squares wss 
+wss <- kmeans.result$tot.withinss
+print(wss)
+```
+
+```{r}
+#BCubed
+kmeans_cluster <- c(kmeans.result$cluster)
+
+ground_truth <- c(classLabel)
+
+data <- data.frame(cluster = kmeans_cluster, label = ground_truth)
+
+# Function to calculate BCubed precision and recall
+  bcubed <- function(data) {
+  n <- nrow(data)
+  total_precesion <- 0
+  total_recall <- 0
+
+  for (i in 1:n) {
+    cluster <- data$cluster[i]
+    label <- data$label[i]
+    
+# Count the number of items from the same category within the same cluster
+intersection <- sum(data$label[data$cluster == cluster] == label)
+    
+# Count the total number of items in the same cluster
+total_same_cluster <- sum(data$cluster == cluster)
+    
+# Count the total number of items with the same category
+total_same_category <- sum(data$label == label)
+    
+# Calculate precision and recall for the current item and add them to the sums
+total_precesion <- total_precesion + intersection /total_same_cluster
+total_recall <- total_recall + intersection / total_same_category
+  }
+
+  # Calculate average precision and recall
+  precision <- total_precesion / n
+  recall <- total_recall / n
+
+  return(list(precision = precision, recall = recall))
+}
+
+# Calculate BCubed precision and recall
+metrics <- bcubed(data)
+
+# Extract precision and recall from the metrics
+precision <- metrics$precision
+recall <- metrics$recall
+
+# Print the results
+cat("BCubed Precision:", precision, "\n")
+
+cat("BCubed Recall:", recall, "\n")
+```
+
+As the graph of K=4 illustrated , there is a noticeable overlapping between the clusters that effect the cluster performance duo to the similarity between clusters and some wide distance in the cluster itself as the high value of wss indicate(85.3 %) ,the recall value is high which is 1  , the value of precision  0.006430868  is low which can be duo to the presence of outliers ,the value of average silhouette width is 0.54 which is relatively good for the clustering process, Overall, the plot suggests that dividing the data into 4 clusters seems appropriate but it would better if choose k=3 because it has highe  average silhouette widthand  lower wss value .
+
+
+# 3- k=6
+
+```{r}
+set.seed(5000)
+kmeans.result <- kmeans(datasetClustering, 6)
+
+# print the clusterng result
+kmeans.result
+```
+
+
+
+```{r}
+# visualize clustering
+library(factoextra)
+fviz_cluster(kmeans.result, data = datasetClustering)
+```
+
+```{r}
+#average silhouette for cluster  k=6
+library(cluster)
+avg_sil <- silhouette(kmeans.result$cluster,dist(datasetClustering))
+fviz_silhouette(avg_sil)
+```
+
+```{r}
+#Within-cluster sum of squares wss 
+wss <- kmeans.result$tot.withinss
+print(wss)
+```
+
+```{r}
+#BCubed
+kmeans_cluster <- c(kmeans.result$cluster)
+
+ground_truth <- c(classLabel)
+
+data <- data.frame(cluster = kmeans_cluster, label = ground_truth)
+
+# Function to calculate BCubed precision and recall
+  bcubed <- function(data) {
+  n <- nrow(data)
+  total_precesion <- 0
+  total_recall <- 0
+
+  for (i in 1:n) {
+    cluster <- data$cluster[i]
+    label <- data$label[i]
+    
+# Count the number of items from the same category within the same cluster
+intersection <- sum(data$label[data$cluster == cluster] == label)
+    
+# Count the total number of items in the same cluster
+total_same_cluster <- sum(data$cluster == cluster)
+    
+# Count the total number of items with the same category
+total_same_category <- sum(data$label == label)
+    
+# Calculate precision and recall for the current item and add them to the sums
+total_precesion <- total_precesion + intersection /total_same_cluster
+total_recall <- total_recall + intersection / total_same_category
+  }
+
+  # Calculate average precision and recall
+  precision <- total_precesion / n
+  recall <- total_recall / n
+
+  return(list(precision = precision, recall = recall))
+}
+
+# Calculate BCubed precision and recall
+metrics <- bcubed(data)
+
+# Extract precision and recall from the metrics
+precision <- metrics$precision
+recall <- metrics$recall
+
+# Print the results
+cat("BCubed Precision:", precision, "\n")
+
+cat("BCubed Recall:", recall, "\n")
+```
+
+
+
+| Measure                             | K=3        | K=4        | K=6        |
+|:------------------------------------|-----------:|-----------:|-----------:|
+| Average Silhouette width            | 0.55       | 0.54       | 0.52       |
+| Total within-cluster sum of square  | 10330.95   | 7024.453   | 4559.055   |
+| BCubed precision                    | 0.00482315 | 0.00643087 | 0.00964630 |
+| BCubed recall                       | 1.00       | 1.00       | 1.00       |
+
+
+
+
+As the graph of K=6 illustrated , there is a noticeable overlapping between the clusters that effect the cluster performance duo to the similarity between clusters and wide distance in the cluster itself as the high value of wss indicate (90.5%) ,the recall value is acceptable which is 0.22 and it is the lowest value between the other clusters, the value of precision 0.02 is low which can be duo to the presence of outliers, the value of average silhouette width is 0.52 which is bad for the clustering process it. Overall, the plot suggests that dividing the data into 3 clusters seems appropriate because the average Silhouette score .
+
+
+
+
+
