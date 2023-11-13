@@ -423,8 +423,138 @@ we will remove the (JP_Sales) because it is of low importance to our class_label
 ```{r}
 dataset<- dataset[,-9]
 ```
+# Dataset balncing and discritization:
+```{r}
+#Discritization
+
+dataBeforDiscertize=(dataset[,7:10])
+library("arules")
+dataAfterDiscertize=discretizeDF(
+dataBeforDiscertize)
+unique(dataAfterDiscertize[,1])
+unique(dataAfterDiscertize[,2])
+unique(dataAfterDiscertize[,3])
+unique(dataAfterDiscertize[,4])
+levels(dataAfterDiscertize$NA_Sales)<-c("low","medium","high")
+levels(dataAfterDiscertize$EU_Sales)<-c("low","high")
+levels(dataAfterDiscertize$Other_Sales)<-c("low","high")
+levels(dataAfterDiscertize$Global_Sales)<-c("low","medium","high")
+
+#Balancing
+
+library(groupdata2)
+dataset<-downsample(dataset,cat_col="Global_Sales")
+
+
+```
+
 
 # Dataset after pre-processing:
 ```{r}
 print(dataset)
 ```
+
+We performed balancing and discritization because we notice from the graphs that our dataset is inbalanced.
+
+
+
+
+# Data Mining Techniques:
+
+# Classification:
+
+The goal of classification is to build a model or algorithm that can generalize patterns and relationships observed in the training data to make accurate predictions on unseen data. The model learns from the labeled examples in the training set, where each example consists of a set of input features and a corresponding known class label.
+
+# Information gain: 
+
+By using Information Gain to select attributes for splitting, the decision tree algorithm aims to create a tree that maximizes the information provided by the attributes about the class labels, leading to effective classification.
+
+
+
+
+
+# Clustring:
+
+Clustering is a technique used to group similar data points together based on their inherent characteristics or similarities.
+ So our goal of clustering is to identify patterns, structures, or relationships within 
+a dataset without any prior knowledge of the groups or classes that may exist.
+
+
+# 1:Preprossening before clustring 
+
+before starting the clustring process we need to remove the class label since clustring is an unsupervised learning , but before removing the class label We stored it in a varible just in case of further need(We need it to compute Bcubed precision and recall),Then we need to transform each factor coulnm to numeric because it's essential to convert factor variables to numeric ones due to the algorithmic requirements of clustring(Kmeans) and the characteristics of factor variables.
+
+```{r}
+# We stored the class label in a varible just in case of further need(We need it to compute Bcubed precision and recall)
+
+classLabel<-dataset$Global_Sales
+
+```
+
+
+```{r}
+# Removing the classLabel before the clustring process
+dataset<- dataset[,-10]
+```
+
+
+```{r}
+# We removed columns that are not relevant to the clustering process and can distort the result 
+datasetClustering <- dataset[, setdiff(3:9, c(4, 6))]
+View(datasetClustering)
+```
+
+
+```{r}
+
+##converting factors to numric to apply kmeans method , it's essential to convert factor variables to numeric ones due to the algorithmic requirements of K-means and the characteristics of factor variables.
+
+datasetClustering$Platform <- as.numeric(as.character(datasetClustering$Platform))
+datasetClustering$Genre <- as.numeric(as.character(datasetClustering$Genre))
+View(datasetClustering)
+```
+
+After preprocessing the data now we will start performin the clustring technique on the processsed dataset.
+
+
+
+
+# 2:Kmeans
+
+We chose K-means clustering as our clustring method because it excels in handling large datasets, offering prompt and easily understandable insights. It is beneficial for exploring data, facilitating the quick detection of potential data clusters.
+
+#3:Choosing the number of clusters K
+
+#1-Silhouette method
+This graph depicts the process of finding the optimal number of clusters for a dataset using the Silhouette method. The x-axis represents the number of clusters (k) considered in the analysis, ranging from 1 to 10. The y-axis shows the average Silhouette width, which is a measure of how similar an object is to its own cluster compared to other clusters.
+
+```{r}
+fviz_nbclust(datasetClustering, kmeans, method = "silhouette")+
+  labs(subtitle = "Silhouette method")
+```
+
+The plot shows a peak at k=3, where the average Silhouette score is the highest. This suggests that the data points are, on average, closer to other points in their own cluster and farther from points in other clusters when the data is divided into three clusters. As a result, according to the Silhouette method, k=3 is the optimal number of clusters.
+
+#2- Elbow method
+The Elbow Method using Within-Cluster Sum of Squares (WSS) is a technique to determine the optimal number of clusters in K-means clustering. It involves running the clustering algorithm for a range of cluster numbers and calculating the WSS for each. WSS is the sum of squared distances of each point to its cluster centroid. As the number of clusters increases, WSS tends to decrease; the goal is to find the point where increasing the number of clusters does not lead to a significant decrease in WSS. This point, visually resembling an elbow on a plot of WSS against the number of clusters, is considered the optimal number of clusters.
+```{r}
+fviz_nbclust(datasetClustering, kmeans, method = "wss") +
+  geom_vline(xintercept = 4, linetype = 2)+
+  labs(subtitle = "Elbow method")
+```
+
+As shown in the above graph , 4 is the value that resembles an elbow in the plot(The turnning point) wich means it is the optimal value of K the we will use in our clustring process.
+
+In conclusion, we will choose K=4 for our clustering process, as it marks the turning point on the Elbow Method curve, indicating an optimal balance in cluster compactness and separation. Additionally, we will utilize K=3 and K=6, as these values maximize the average silhouette width, with K=3 being the primary maximizer and K=6 the secondary. By selecting these specific K values, we aim to achieve a satisfactory level of precision and recall in our clustering analysis, ensuring both the relevance and completeness of the clustered data.
+
+
+
+
+
+
+
+
+
+
+
+
