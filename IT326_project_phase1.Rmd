@@ -3,6 +3,8 @@ title: "Global video games sales"
 output: html_notebook
 ---
 
+#Phase1:
+
 
 # Proplem:
 We live in a time when video games are extremely popular. The global video game market continues to grow year-on-year, and the industry is now valued at over $100 billion worldwide. With technology continuously pushing the boundaries, video games have only become more popular and more high-quality. Gameplay mechanics, cutting-edge graphics, and intricate storylines make today's games more immersive than ever before. We chose this dataset to gain insights on the popularity of upcoming games. 
@@ -426,4 +428,3 @@ dataset<- dataset[,-9]
 ```{r}
 print(dataset)
 ```
-
