@@ -1192,4 +1192,3 @@ As the graph of K=6 illustrates , there is a noticeable overlapping between the 
 Overall, the plots suggest that dividing the data into 3 clusters rather than 4 or 6 clusters seems appropriate because of the highest average Silhouette score. This implies that the 3-cluster solution has better cohesion and separation among the clusters: each data point is, on average, closer to its own cluster center and farther from other cluster centers compared to the 4 and 6 cluster solutions. The high average Silhouette score indicates that the 3-cluster model provides a more meaningful and well-defined cluster structure, where each cluster is distinct and contains members that are more similar to each other than to members of other clusters. This can lead to more actionable insights and reliable interpretations of the data's underlying patterns.
 
 
-
