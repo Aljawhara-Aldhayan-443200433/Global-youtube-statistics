@@ -7,7 +7,7 @@ output: html_notebook
 
 # Phase1:
 # Proplem:
-We live in a time when video games are extremely popular. The global video game market continues to grow year-on-year, and the industry is now valued at over $100 billion worldwide. With technology continuously pushing the boundaries, video games have only become more popular and more high-quality. Gameplay mechanics, cutting-edge graphics, and intricate storylines make today's games more immersive than ever before. We chose this dataset to gain insights on the popularity of upcoming games.  
+We live in a time when video games are extremely popular. The global video game market continues to grow year-on-year, and the industry is now valued at over $100 billion worldwide. With technology continuously pushing the boundaries, video games have only become more popular and more high-quality. Gameplay mechanics, cutting-edge graphics, and intricate storylines make today's games more immersive than ever before. We chose this dataset to gain insights on the popularity of upcoming games. 
 
 
 # Class label:
@@ -63,8 +63,6 @@ library(Hmisc)
 library(ggplot2)
 library(mlbench)
 library(caret)
-library(factoextra)
-library(cluster)
 options(max.print=9999999)
 ```
 
@@ -429,11 +427,7 @@ dataset<- dataset[,-9]
 ```{r}
 #Discritization
 
-
-
 dataBeforDiscertize=(dataset[,7:10])
-
-View(dataset)
 library("arules")
 dataAfterDiscertize=discretizeDF(
 dataBeforDiscertize)
@@ -441,21 +435,15 @@ unique(dataAfterDiscertize[,1])
 unique(dataAfterDiscertize[,2])
 unique(dataAfterDiscertize[,3])
 unique(dataAfterDiscertize[,4])
+levels(dataAfterDiscertize$NA_Sales)<-c("low","medium","high")
+levels(dataAfterDiscertize$EU_Sales)<-c("low","high")
+levels(dataAfterDiscertize$Other_Sales)<-c("low","high")
+levels(dataAfterDiscertize$Global_Sales)<-c("low","medium","high")
+
 #Balancing
-
-
 
 library(groupdata2)
 dataset<-downsample(dataset,cat_col="Global_Sales")
-datasetClustering<- dataset
-
-
-levels(dataAfterDiscertize$NA_Sales)<-c("low","medium","high")
-levels(dataAfterDiscertize$EU_Sales)<-c("low","medium","high")
-levels(dataAfterDiscertize$Other_Sales)<-c("low","medium","high")
-levels(dataAfterDiscertize$Global_Sales)<-c("low","medium","high")
-
-dataset[,7:10]=dataAfterDiscertize[,1:4]
 
 
 ```
@@ -468,7 +456,7 @@ print(dataset)
 
 We performed balancing and discritization because we notice from the graphs that our dataset is inbalanced.
 
-# Phase2:
+
 
 
 # Data Mining Techniques:
@@ -491,6 +479,7 @@ myFormula <- Global_Sales ~  NA_Sales +EU_Sales+Other_Sales+Genre+Platform
 dataset_ctree <- ctree(myFormula, data=trainData)
  
 table(predict(dataset_ctree), trainData$Global_Sales)
+print(dataset_ctree)
 plot(dataset_ctree,type="simple")
 plot(dataset_ctree)
  
@@ -509,9 +498,9 @@ acc90ctree=acc90ctree*100
 ```
 
 ```{r}
-precision90ctree=(((442/862)+(281/916)+(454/1010))/3)*100
-sensitivity90ctree=(( 0.8080+0.5165+0.8731)/3)*100
-specificity90ctree=(( 0.8102+0.8585+0.9258)/3)*100
+precision90ctree=(((486/808)+(243/919)+(422/974))/3)*100
+sensitivity90ctree=(( 0.8764+0.4559+0.8423)/3)*100
+specificity90ctree=((0.7814+0.8879+0.9128)/3)*100
 ```
 
 # ID3 alogrithm:80% taining set, 20% testing set
@@ -544,9 +533,9 @@ acc80ctree=acc80ctree*100
 ```
 
 ```{r}
-precision80ctree=(((930/1739)+(548/1890)+(927/2056))/3)*100
-sensitivity80ctree=((0.8439+0.5037+ 0.8505)/3)*100
-specificity80ctree=((0.7984+0.8622+0.9388)/3)*100
+precision80ctree=(((838/1746)+(578/1799)+(903/1974))/3)*100
+sensitivity80ctree=(( 0.7766+0.5479+ 0.8471)/3)*100
+specificity80ctree=(( 0.8232+0.8387+0.9250)/3)*100
 ```
 
 
@@ -582,9 +571,9 @@ acc70ctree=acc70ctree*100
 ```
 
 ```{r}
-precision70ctree=((( 1339/2682)+( 913/2738)+(1349/3081))/3)*100
-sensitivity70ctree=((0.8091+0.5581+0.8384)/3)*100
-specificity70ctree=((0.8265+0.8388+0.9362)/3)*100
+precision70ctree=((( 1341/2558)+( 811/2777)+(1362/2974))/3)*100
+sensitivity70ctree=((0.8268+0.5104+0.8598)/3)*100
+specificity70ctree=((0.8062+0.8662+ 0.9262)/3)*100
 
 ```
 
@@ -601,24 +590,23 @@ finaltable=as.table(table)
 finaltable
 ```
 
-The accuracy measurement is not always enough to determine the best split of dataset to create the model
-starting with the highest accuracy(70% training,30% test) we can see that the sensitivity is very close to the accuracy so it’s balanced and we might consider it good choice for the model
+he accuracy measurement is not always enough to determine the best split of dataset to create the model.
+starting with the highest accuracy(70% training,30% test)
+we can see that the sensitivity is very close to the accuracy so it’s balanced and we might consider it good choice for the model
 
 Then we have (90% training,10% test) 
-It has a Precision=42.3% which means our model correctly predict more than 43% out of all the predictions made, but it has the least accuracy percentage (73.06%) so it’s not the best option.
-
+It has a Precision=43.3% which means our model correctly predict more than 43% out of all the predictions made.
+and that percentage is higher than all other the splits which is a good thing.
 
 Lastly (80% training,20% test) 
-precision=42.5% and it also has the highest Precision among other split and high accuracy (73.3%)
-so it’s might be a good choice for the model
-
+If classifier predicts positive, you can’t trust it since the precision=41.9% and it also has the lowest Precision among other split(41.9%).
+so it’s not really a good choice for the model
 
 
 #C5.0 method
 In decision tree algorithms, such as the C5.0 algorithm, the Gain Ratio is used to measure the effectiveness of splitting nodes during the tree-building process. Information gain is one of the limitations of other splitting criteria, which is why the Gain Ratio was developed.
 Using the Gain Ratio at each node of the decision tree, the C5.0 algorithm, an extension of C4.5, determines the best attribute to split on. Gain Ratios are particularly useful when dealing with attributes with different categories or levels
 # C5.0 tree: 80% traning set, and 20% testing set
-
 ```{r}
 library(remotes)
 library("C50")
@@ -639,12 +627,10 @@ acc80C50=acc80C50*100
 ```
 
 ```{r}
-precision80C50=((( 946/1728)+( 532/1915)+(936/2051))/3)*100
-sensitivity80C50=((0.8584+0.4890+0.8587)/3)*100
-specificity80C50=((0.7934+0.8736+0.9365)/3)*100
+precision80C50=((( 912/1700)+( 541/1874)+(894/1982))/3)*100
+sensitivity80C50=((0.8452+0.5128+0.8386)/3)*100
+specificity80C50=((0.8015+0.8695+0.9288)/3)*100
 ```
-
-
 
 # C5.0 tree: 70% traning set, and 30% testing set
 ```{r}
@@ -667,9 +653,9 @@ acc70C50=acc70C50*100
 ```
 
 ```{r}
-precision70C50=((( 1454/2551)+(792/2858)+(1346/3083))/3)*100
-sensitivity70C50=((  0.8785+0.4841+ 0.8365)/3)*100
-specificity70C50=((0.7861+0.8756+0.9368)/3)*100
+precision70C50=((( 1331/2594)+( 828/2765)+(1368/2963))/3)*100
+sensitivity70C50=(( 0.8206+0.5211+0.8636)/3)*100
+specificity70C50=((0.8175+0.8624+0.9228)/3)*100
 ```
 
 # C5.0 tree: 90% traning set, and 10% testing set
@@ -692,10 +678,11 @@ acc90C50 <- co_result$overall["Accuracy"]
 acc90C50=acc90C50*100
 ```
 
+
 ```{r}
-precision90C50=(((450/853)+(268/932)+(460/1004))/3)*100
-sensitivity90C50=(( 0.8227+0.4926+0.8846)/3)*100
-specificity90C50=(( 0.8017+0.8735+0.9203)/3)*100
+precision90C50=((( 433/828)+( 273/870)+(412/988))/3)*100
+sensitivity90C50=(( 0.8109+ 0.5122+ 0.8224)/3)*100
+specificity90C50=(( 0.8008+0.8406+0.9260)/3)*100
 ```
 # Evaluation and comparison
 ```{r}
@@ -710,145 +697,6 @@ finaltable=as.table(table)
 finaltable
 ```
 
-we can  clearly see that results are very close to that information again results.
-The split that had the highest accuracy is (80% training,20% test) and also had the highest Precision among all the split  and has a sensitivity very close to the accuracy 
-which make it balanced and a good choice for the model.
-
-At the same time (70% training,30% test) split had very close accuracy to the previous split but it also had less sensitivity result which is 73.2% so it doesn’t really make it a good choice.
-
-Lastly (90% training,10% test) 
-It has the lowest accuracy (73.12%) and Precision(42.4%)
-So it’s the least split option to go for the model
-
-#CART 
-
-CART (Classification and Regression Trees) in R uses the Gini index to determine whether a randomly chosen element would be incorrectly classified. In the Gini index, we assess how likely it is for an element to be misclassified if it was randomly chosen. Generally, the lower the Gini index, the better the split.
-
-
-#CART tree: 90% training and 10% testing
-```{r}
-set.seed(15687)
-sample<-sample.int(n=nrow(dataset),size=floor(0.9*nrow(dataset)), replace=F)
-trainCart90<-dataset[sample,]
-testCart10<-dataset[-sample,]
-trainCart90<-trainCart90[,c(7:10,3,5)]
-testCart10<-testCart10[,c(7:10,3,5)]
-```
-
-```{r}
-library(rpart)
-library(rpart.plot)
-
-
-Global_Sales.test=testCart10$Global_Sales
-fit.tree = rpart(Global_Sales~ ., data=trainCart90, method = "class", cp=4.6816e-04)
-fit.tree
-rpart.plot(fit.tree)
-fit.tree$variable.importance
-pred.tree = predict(fit.tree, testCart10, type = "class")
-table(pred.tree,Global_Sales.test)
-printcp(fit.tree)
-```
-
-```{r}
-#Accuracy/precision/sensitivity of model is given by
-accuracy90=((477+  246 + 456)/nrow(testCart10))*100
-precision90=(((477/833)+(246/955)+(456/996))/3)*100
-sensitivity90=(((477/547)+(246/535)+(456/523))/3)*100
-specificity90=((((833)/1058)+((955)/1070)+((996)/1082))/3)*100
-```
-
-#CART tree: 80% training and 20% testing
-```{r}
-set.seed(15687)
-sample<-sample.int(n=nrow(dataset),size=floor(0.8*nrow(dataset)), replace=F)
-trainCart80<-dataset[sample,]
-testCart20<-dataset[-sample,]
-trainCart80<-trainCart80[,c(7:10,3,5)]
-testCart20<-testCart20[,c(7:10,3,5)]
-```
-
-
-```{r}
-library(rpart)
-library(rpart.plot)
-
-
-Global_Sales.test=testCart20$Global_Sales
-fit.tree = rpart(Global_Sales~ ., data=trainCart80, method = "class", cp=4.6816e-04)
-fit.tree
-rpart.plot(fit.tree)
-fit.tree$variable.importance
-pred.tree = predict(fit.tree, testCart20, type = "class")
-table(pred.tree,Global_Sales.test)
-printcp(fit.tree)
-```
-
-```{r}
-#Accuracy/precision/sensitivity of model is given by
-accuracy80=((873+  541 + 941)/nrow(testCart20))*100
-precision80=(((873/1748)+(541/1848)+(941/1968))/3)*100
-sensitivity80=(((873/1073)+(541/562)+(941/1087))/3)*100
-specificity80=((((1073)/2136)+((562)/2160)+((1087)/2122))/3)*100
-```
-
-
-
-#CART tree: 70% training and 30% testing
-```{r}
-set.seed(15687)
-sample<-sample.int(n=nrow(dataset),size=floor(0.7*nrow(dataset)), replace=F)
-trainCart70<-dataset[sample,]
-testCart30<-dataset[-sample,]
-trainCart70<-trainCart70[,c(7:10,3,5)]
-testCart30<-testCart30[,c(7:10,3,5)]
-```
-
-
-```{r}
-library(rpart)
-library(rpart.plot)
-
-
-Global_Sales.test=testCart30$Global_Sales
-fit.tree = rpart(Global_Sales~ ., data=trainCart70, method = "class", cp=4.6816e-04)
-fit.tree
-rpart.plot(fit.tree)
-fit.tree$variable.importance
-pred.tree = predict(fit.tree, testCart30, type = "class")
-table(pred.tree,Global_Sales.test)
-printcp(fit.tree)
-```
-
-```{r}
-#Accuracy/precision/sensitivity of model is given by
-accuracy70=((1364+  787 + 1410)/nrow(testCart30))*100
-precision70=(((1364/2572)+(787/2849)+(1410/2953))/3)*100
-sensitivity70=(((1364/1610)+(321/1570)+(875/1633))/3)*100
-specificity70=((((1610)/3203)+((1570)/3243)+((1633)/3180))/3)*100
-```
-
-
-#CART tree result Evaluation and analysis:
-```{r}
-table=matrix(c(accuracy90,accuracy80,accuracy70
-               ,precision90,precision80,precision70,
-               sensitivity90,sensitivity80,sensitivity70,
-               specificity90,specificity80,specificity70
-               ),ncol=3,byrow=TRUE)
-colnames(table)=c('90% train,10% test','80% train,20% test','70% train,30% test')
-rownames(table)=c("accuracy","precision","sensitivity","specificity")
-finaltable=as.table(table)
-finaltable
-```
-
-# Evaluation and comparison
-First we used the above partitioning for the training set/testing set;An evaluation of a model's  based on one dataset may not be accurate. Different sets of training and test data help to obtain a more sound evaluation of the model.
-
-From the result above we can see that the 70% training set, 30% testing set gave the best accuracy but we don't only judge the accuracy, because if we do that we may use an imbalanced set, let's compare the sensitivity/specificity too, we can notice that the sensitivity  of the 70% training set, 30% testing set is pretty low(53%) so it has imbalance issues so even if the accuracy is high we won't consider it as the best model.
-We will see the results of the second best accuracy set which is:90% training set, 10% testing set,
-the sensitivity is pretty high(73.5%, and 87% respectively) we will compare it to 80% and 20% who has sensitivity/specificity of(88%, and 42.5% respectively), since the 90% training set, 10% testing set
-has the best specificity between the two we will consider it as the best training/testing set.
 
 
 
@@ -866,7 +714,7 @@ before starting the clustring process we need to remove the class label since cl
 ```{r}
 # We stored the class label in a varible just in case of further need(We need it to compute Bcubed precision and recall)
 
-classLabel<-dataset$Global_Sales 
+classLabel<-dataset$Global_Sales
 
 ```
 
@@ -908,7 +756,8 @@ We chose K-means clustering as our clustring method because it excels in handlin
 This graph depicts the process of finding the optimal number of clusters for a dataset using the Silhouette method. The x-axis represents the number of clusters (k) considered in the analysis, ranging from 1 to 10. The y-axis shows the average Silhouette width, which is a measure of how similar an object is to its own cluster compared to other clusters.
 
 ```{r}
-fviz_nbclust(datasetClustering, kmeans, method = "silhouette")+labs(subtitle = "Silhouette method")
+fviz_nbclust(datasetClustering, kmeans, method = "silhouette")+
+  labs(subtitle = "Silhouette method")
 ```
 
 The plot shows a peak at k=3, where the average Silhouette score is the highest. This suggests that the data points are, on average, closer to other points in their own cluster and farther from points in other clusters when the data is divided into three clusters. As a result, according to the Silhouette method, k=3 is the optimal number of clusters.
@@ -1012,7 +861,7 @@ cat("BCubed Precision:", precision, "\n")
 cat("BCubed Recall:", recall, "\n")
 ```
 
-As the graph of K=3 illustrated , there is a noticeable overlapping between the clusters that effect the cluster performance duo to the similarity between clusters and wide distance in the cluster itself as the high value of wss  indicate (78.5 %) ,he recall value  is 1 wich means that all items that must belong to their specified cluster has been correctly identified  , the value of precision 0.004823151  is low which can be duo to the presence of outliers ,the value of average silhouette width is 0.55 which is relatively good for the clustering process, Overall, the plot suggests that dividing the data into 3 clusters seems appropriate because the average Silhouette score is high.
+As the graph of K=3 illustrated , there is a noticeable overlapping between the clusters that effect the cluster performance duo to the similarity between clusters and wide distance in the cluster itself as the high value of wss  indicate (78.5 %) ,the recall value is high which is 1 , the value of precision 0.004823151  is low which can be duo to the presence of outliers ,the value of average silhouette width is 0.55 which is relatively good for the clustering process, Overall, the plot suggests that dividing the data into 3 clusters seems appropriate because the average Silhouette score is high.
 
 
 
@@ -1099,7 +948,7 @@ cat("BCubed Precision:", precision, "\n")
 cat("BCubed Recall:", recall, "\n")
 ```
 
-As the graph of K=4 illustrated , there is a noticeable overlapping between the clusters that effect the cluster performance duo to the similarity between clusters and some wide distance in the cluster itself as the high value of wss indicate(85.3 %) ,the recall value  is 1 wich means that all items that must belong to their specified cluster has been correctly identified , the value of precision  0.006430868  is low which can be duo to the presence of outliers ,the value of average silhouette width is 0.54 which is relatively good for the clustering process but it is lower than K=3, Overall, the plot suggests that dividing the data into 4 clusters seems appropriate but it would better if choose k=3 because it has highest average silhouette value .
+As the graph of K=4 illustrated , there is a noticeable overlapping between the clusters that effect the cluster performance duo to the similarity between clusters and some wide distance in the cluster itself as the high value of wss indicate(85.3 %) ,the recall value is high which is 1  , the value of precision  0.006430868  is low which can be duo to the presence of outliers ,the value of average silhouette width is 0.54 which is relatively good for the clustering process, Overall, the plot suggests that dividing the data into 4 clusters seems appropriate but it would better if choose k=3 because it has highe  average silhouette widthand  lower wss value .
 
 
 # 3- k=6
@@ -1197,8 +1046,9 @@ cat("BCubed Recall:", recall, "\n")
 
 
 
-As the graph of K=6 illustrates , there is a noticeable overlapping between the clusters that effect the cluster performance duo to the similarity between clusters and wide distance in the cluster itself as the high value of wss indicate (90.5%) ,the recall value  is 1 wich means that all items that must belong to their specified cluster has been correctly identified , the value of precision 0.00964630 is low which can be duo to the presence of outliers, the value of average silhouette width is 0.52 which is lower than the other K values. 
+As the graph of K=6 illustrated , there is a noticeable overlapping between the clusters that effect the cluster performance duo to the similarity between clusters and wide distance in the cluster itself as the high value of wss indicate (90.5%) ,the recall value is acceptable which is 0.22 and it is the lowest value between the other clusters, the value of precision 0.02 is low which can be duo to the presence of outliers, the value of average silhouette width is 0.52 which is bad for the clustering process it. Overall, the plot suggests that dividing the data into 3 clusters seems appropriate because the average Silhouette score .
 
-Overall, the plots suggest that dividing the data into 3 clusters rather than 4 or 6 clusters seems appropriate because of the highest average Silhouette score. This implies that the 3-cluster solution has better cohesion and separation among the clusters: each data point is, on average, closer to its own cluster center and farther from other cluster centers compared to the 4 and 6 cluster solutions. The high average Silhouette score indicates that the 3-cluster model provides a more meaningful and well-defined cluster structure, where each cluster is distinct and contains members that are more similar to each other than to members of other clusters. This can lead to more actionable insights and reliable interpretations of the data's underlying patterns.
+
+
 
 
