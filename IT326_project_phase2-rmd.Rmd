@@ -141,8 +141,21 @@ pie(tab, labels=txt , main = "Pie chart of Platform")
 
 ```
 
-This pie chart illustrate platforms of global video games , We notice from the pie chart of platform attribute that releasing a game for PS users will increase the popularity of the game since it is the most common platform among gamers. 
+The pie chart provides a distribution of video game platforms by the percentage of games released for each. Here's a breakdown of the results:
 
+- PS2: Has the largest share with 20% of the games, indicating it's the most popular platform in this dataset.
+- Wii: Holds 14% of the games, making it the second most represented platform.
+- DS: Represents 12% of the games, showing significant popularity.
+- PS3: Accounts for 10% of the games, indicating a strong presence in the market.
+- PS (PlayStation) and XB (Xbox): Each have 8% of the games, reflecting their substantial market share.
+- PSP (PlayStation Portable): Has 8% of the games as well.
+- 3DS: Comprises 6% of the games, showing it has a fair number of titles.
+- PCand N64 (Nintendo 64): Both hold 4% of the games, suggesting a smaller presence in this dataset.
+- **PSV (PlayStation Vita)**: Represents 4% of the games.
+- PS4: Has only 2% of the games, which could be due to various reasons like the dataset not covering recent years or the console being new at the time of data collection.
+- X360 (Xbox 360): Has the smallest share with 2% of the games.
+
+This pie chart visually represents the spread of games across different gaming platforms, highlighting the popularity or dominance of certain consoles or systems in the video game market. The PS2's large segment suggests its leading role during its time, while newer consoles like the PS4 and Xbox 360 have smaller slices, which might be due to the timing of the data collection relative to their market lifespan.
 
 
 
@@ -159,7 +172,33 @@ bb <- dataset$Genre %>% table() %>% barplot(axisnames=F, main = "Barplot for Pop
 
 text(bb,tab/2,labels=txt,cex=1.5) 
 ```
-This barplot illustrates popularity of global video games genres ,In terms of genre, action games are the most popular, followed by sports and music games. It is safe to assume that a high number of genres of this nature exist due to their popularity and sales.
+This barplot  illustrates the popularity of various video game genres based on a count of products or titles. Here's a breakdown of the results:
+
+- Action: This is the most popular genre, making up 20% of the total games produced, with the count exceeding 2500 titles.
+
+- Adventure: Holds around 7.7% of the market share, with about 500 to 1000 titles.
+
+- Fighting: Comprises 6.1% of the games, indicating a moderate level of popularity.
+
+- Misc (Miscellaneous): Represents 9.5% of the titles, suggesting a diverse range of games that don't fit into the conventional genre categories.
+
+- Platform: Has 5.3% of the games, indicating a smaller but dedicated segment of the market.
+
+- Puzzle: Makes up 4.5% of the titles, showing it's a niche but steady genre.
+
+- Racing: Holds 7.9% of the games, reflecting a consistent fan base.
+
+- Role-Playing: Comprises 9.7% of the games, indicating a significant presence in the market.
+
+- Shooter: Encompasses 7.9% of the titles, sharing a similar market share with Racing games.
+
+- Simulation: Takes up 5.2% of the games, suggesting a more specialized appeal.
+
+- Sports: This genre is quite popular, accounting for 14.1% of the titles, making it the second most populous category after Action.
+
+- Strategy: Has the smallest share with 4.1%, showing it as the least represented among the genres listed.
+
+Each bar's height corresponds to the total count of games in that genre, and the percentage indicates its share of the total number of games produced. This barplot provides a clear visual representation of the relative popularity and market share of each genre in the global video games industry.
 
 
 
@@ -206,20 +245,64 @@ The boxplot of the Global-sales attribute indicate that the values are close to 
 qplot(data = dataset, x=Global_Sales,y=Genre,fill=I("yellow"),width=0.5 ,geom = "boxplot" , main = "BoxPlots for genre and Global_Sales")
 ```
 
-In the boxplot we can see that all the genres have Glob_ sales close to each other, but we notice an outlier that reaches more than 80 Glob_ sales which is a game with genre sports. 
+The boxplot visualization represents global sales for various video game genres. It provides a snapshot of how different game types perform in terms of sales worldwide.
+
+1. Shooter and Role-Playing: These genres have a higher median, which means on average, games in these categories tend to sell more than other genres. They also have several outliers, indicating that there are standout games that sell significantly more than the typical game in these genres.
+
+2. Action, Misc, and Sports: While these genres have a lower median sales compared to Shooter and Role-Playing, the presence of outliers (the dots above the boxes) suggests that there are individual games within these genres that are extremely successful.
+
+3. Puzzle and Adventure: These genres have lower median sales, with the data points tightly packed, indicating that games in these genres generally do not sell as much as the others. There are a few outliers, but they are not as pronounced as in the other genres.
+
+Box Size (Variability): The size of the box, which shows the interquartile range (IQR), indicates how spread out the sales figures are for the middle 50% of games in each genre. A larger box implies greater variability in sales. Some genres, like Role-Playing, have a wider range, meaning there's a more significant difference between the top and bottom sellers. Others, like Adventure and Puzzle, have a smaller box, indicating more consistent sales figures among most games in that genre.
+
+Whiskers and Outliers: The lines extending from the boxes (whiskers) show the range of sales outside the middle 50%, but within what is considered the normal range of sales data. Points beyond the whiskers are outliers, which are sales figures that stand out for being unusually high.
+
+Overall, the boxplot suggests that while some genres have games that tend to sell well on average, there are also games within every genre that either perform exceptionally well or much poorer than the median, as indicated by the presence of outliers.
 
 ```{r}
 dataset$Year %>% table() %>% barplot( main = "Barplot for year")
 ```
 
- The barplot of year illustrate that the number of video games were low from 1980 until 2000 , then number of games increased to more than 1200 till 2012.
+The barplot illustrates the number of video games released each year over a period from the 1980s through the mid-2010s.
+
+From the barplot, you can infer the following:
+1. There was a relatively low number of games released in the early 1980s.
+2. The number of games released annually appears to have increased gradually over time, with some fluctuations.
+3. There is a noticeable upward trend in the number of releases from the early 1990s, reaching a peak around the late 2000s.
+4. After this peak, there's a sharp decline in the number of games released.
+5. The highest number of releases occurred in a year between the mid-2000s to the early 2010s (the exact year isn't visible, but it's within this range).
+6. The significant drop-off after the peak might suggest changes in the industry, such as a shift towards digital distribution, the consolidation of game developers, the rise of mobile gaming, or other market dynamics that affected game production.
 
 
 ```{r}
 pairs(~NA_Sales + EU_Sales + JP_Sales + Other_Sales + Global_Sales, data = dataset,
       main = "Sales Scatterplot")
 ```    
-We used Scatterplot to determine the type of correlation we have between the sales; we can see that the majority have positive correlation with each other. 
+The scatter plots shows the following conclusions regarding the correlation of sales from one region as compared to the others:
+
+1-NA_Sales Correlation:
+Strong positive correlation with EU_Sales, indicating that games that sell well in North America are likely to also sell well in Europe.
+Weaker correlation with JP_Sales, suggesting that the performance of games in North America is not a strong predictor of their performance in Japan.
+Moderate positive correlation with Other_Sales, showing some level of predictive power of North American sales for other regions.
+Strong correlation with Global_Sales, as expected, since North America is a large market and strongly influences global trends.
+
+2-EU_Sales Correlation:
+Positive correlation with NA_Sales, as mentioned, indicating mutual sales performance trends.
+Weaker correlation with JP_Sales, implying that European sales trends do not necessarily align with those in Japan.
+Mild positive correlation with Other_Sales, suggesting that European sales can somewhat predict sales in other regions.
+Strong correlation with Global_Sales, reflecting Europe's significant impact on global sales figures.
+
+3-JP_Sales Correlation:
+Weak correlation with both NA_Sales and EU_Sales, highlighting the distinct market behavior in Japan compared to North America and Europe.
+Weak to moderate correlation with Other_Sales, indicating that Japanese sales trends are not consistent with other regions.
+Moderate correlation with Global_Sales, but less pronounced than NA and EU, due to Japan's unique market dynamics.
+
+4-Other_Sales Correlation:
+Moderate positive correlation with NA_Sales and EU_Sales, suggesting that 'Other' regions follow the larger trends in these markets to a degree.
+Weak correlation with JP_Sales, again reinforcing the notion that Japan has distinct market behavior.
+Strong correlation with Global_Sales, which is logical since 'Other' regions contribute to the overall global market.
+
+In general, sales in North America and Europe show a stronger correlation with each other and with global sales, indicating similar market dynamics. Sales in Japan show a unique pattern and do not correlate as strongly with other regions, reflecting distinct consumer preferences. Sales in the 'Other' regions have some correlation with global sales, but not as strongly as North America or Europe.
  
  
       
@@ -427,8 +510,11 @@ dataset<- dataset[,-9]
 ```
 # Dataset balncing and discritization:
 ```{r}
-#Discritization
 
+datasetClustering<- dataset
+View(datasetClustering) 
+
+#Discritization
 
 
 dataBeforDiscertize=(dataset[,7:10])
@@ -442,20 +528,20 @@ unique(dataAfterDiscertize[,2])
 unique(dataAfterDiscertize[,3])
 unique(dataAfterDiscertize[,4])
 #Balancing
-
-
-
+dataset[,7:10]=dataAfterDiscertize[,1:4]
 library(groupdata2)
 dataset<-downsample(dataset,cat_col="Global_Sales")
-datasetClustering<- dataset
 
 
-levels(dataAfterDiscertize$NA_Sales)<-c("low","medium","high")
-levels(dataAfterDiscertize$EU_Sales)<-c("low","medium","high")
-levels(dataAfterDiscertize$Other_Sales)<-c("low","medium","high")
-levels(dataAfterDiscertize$Global_Sales)<-c("low","medium","high")
+levels(dataset$NA_Sales)<-c("low","medium","high")
+levels(dataset$EU_Sales)<-c("low","medium","high")
+levels(dataset$Other_Sales)<-c("low","medium","high")
+levels(dataset$Global_Sales)<-c("low","medium","high")
 
-dataset[,7:10]=dataAfterDiscertize[,1:4]
+
+
+
+
 
 
 ```
@@ -509,9 +595,11 @@ acc90ctree=acc90ctree*100
 ```
 
 ```{r}
-precision90ctree=(((442/862)+(281/916)+(454/1010))/3)*100
-sensitivity90ctree=(( 0.8080+0.5165+0.8731)/3)*100
-specificity90ctree=(( 0.8102+0.8585+0.9258)/3)*100
+
+precision90ctree=(((450/862)+(272/916)+(456/1010))/3)*100
+sensitivity90ctree=(( 0.8227+0.5000+0.8769)/3)*100
+specificity90ctree=(( 0.8026+0.8744+0.9184)/3)*100
+
 ```
 
 # ID3 alogrithm:80% taining set, 20% testing set
@@ -873,13 +961,13 @@ classLabel<-dataset$Global_Sales
 
 ```{r}
 # Removing the classLabel before the clustring process
-datasetClustering<- dataset[,-10]
+datasetClustering<- datasetClustering[,-10]
 ```
 
 
 ```{r}
 # We removed columns that are not relevant to the clustering process and can distort the result 
-datasetClustering <- dataset[, setdiff(3:9, c(4, 6))]
+datasetClustering <- datasetClustering[, setdiff(3:9, c(4, 6))]
 View(datasetClustering)
 ```
 
@@ -1012,7 +1100,7 @@ cat("BCubed Precision:", precision, "\n")
 cat("BCubed Recall:", recall, "\n")
 ```
 
-As the graph of K=3 illustrated , there is a noticeable overlapping between the clusters that effect the cluster performance duo to the similarity between clusters and wide distance in the cluster itself as the high value of wss  indicate (78.5 %) ,he recall value  is 1 wich means that all items that must belong to their specified cluster has been correctly identified  , the value of precision 0.004823151  is low which can be duo to the presence of outliers ,the value of average silhouette width is 0.55 which is relatively good for the clustering process, Overall, the plot suggests that dividing the data into 3 clusters seems appropriate because the average Silhouette score is high.
+As the graph of K=3 illustrated , there is a noticeable overlapping between the clusters that effect the cluster performance duo to the similarity between clusters and wide distance in the cluster itself as the high value of wss  indicate (77 %) ,he recall value  is 0.3938281  wich is relativley high and it means that each item within a cluster is correctly identified  , the value of precision0.02118033   is low which can be duo to the presence of outliers ,the value of average silhouette width is 0.52 which is relatively good for the clustering process, Overall, the plot suggests that dividing the data into 3 clusters seems appropriate because the average Silhouette score is high.
 
 
 
@@ -1099,7 +1187,7 @@ cat("BCubed Precision:", precision, "\n")
 cat("BCubed Recall:", recall, "\n")
 ```
 
-As the graph of K=4 illustrated , there is a noticeable overlapping between the clusters that effect the cluster performance duo to the similarity between clusters and some wide distance in the cluster itself as the high value of wss indicate(85.3 %) ,the recall value  is 1 wich means that all items that must belong to their specified cluster has been correctly identified , the value of precision  0.006430868  is low which can be duo to the presence of outliers ,the value of average silhouette width is 0.54 which is relatively good for the clustering process but it is lower than K=3, Overall, the plot suggests that dividing the data into 4 clusters seems appropriate but it would better if choose k=3 because it has highest average silhouette value .
+As the graph of K=4 illustrated , there is a noticeable overlapping between the clusters that effect the cluster performance duo to the similarity between clusters and some wide distance in the cluster itself as the high value of wss indicate(83.7 %) ,the recall value  is 0.2892338  wich good and means that most of the items that must belong to their specified cluster has been correctly identified , the value of precision  0.02151477   is low which can be duo to the presence of outliers ,the value of average silhouette width is 0.52 which is relatively good for the clustering process and similiar to K=3, Overall, the plot suggests that dividing the data into 4 clusters seems appropriate but it would better if choose k=3 because it has highest average silhouette value and lower wss value .
 
 
 # 3- k=6
@@ -1187,18 +1275,6 @@ cat("BCubed Recall:", recall, "\n")
 
 
 
-| Measure                             | K=3        | K=4        | K=6        |
-|:------------------------------------|-----------:|-----------:|-----------:|
-| Average Silhouette width            | 0.55       | 0.54       | 0.52       |
-| Total within-cluster sum of square  | 10330.95   | 7024.453   | 4559.055   |
-| BCubed precision                    | 0.00482315 | 0.00643087 | 0.00964630 |
-| BCubed recall                       | 1.00       | 1.00       | 1.00       |
-
-
-
-
-As the graph of K=6 illustrates , there is a noticeable overlapping between the clusters that effect the cluster performance duo to the similarity between clusters and wide distance in the cluster itself as the high value of wss indicate (90.5%) ,the recall value  is 1 wich means that all items that must belong to their specified cluster has been correctly identified , the value of precision 0.00964630 is low which can be duo to the presence of outliers, the value of average silhouette width is 0.52 which is lower than the other K values. 
+As the graph of K=6 illustrates , there is a noticeable overlapping between the clusters that effect the cluster performance duo to the similarity between clusters and wide distance in the cluster itself as the high value of wss indicate (86.0 %) wich is higher than 3,4 clusters ,the recall value  is 0.2232582  wich is acceptable , the value of precision 0.02164463  is low which can be duo to the presence of outliers, the value of average silhouette width is 0.4 which is lower than the other K values. 
 
 Overall, the plots suggest that dividing the data into 3 clusters rather than 4 or 6 clusters seems appropriate because of the highest average Silhouette score. This implies that the 3-cluster solution has better cohesion and separation among the clusters: each data point is, on average, closer to its own cluster center and farther from other cluster centers compared to the 4 and 6 cluster solutions. The high average Silhouette score indicates that the 3-cluster model provides a more meaningful and well-defined cluster structure, where each cluster is distinct and contains members that are more similar to each other than to members of other clusters. This can lead to more actionable insights and reliable interpretations of the data's underlying patterns.
-
-
