@@ -595,6 +595,26 @@ The ID3 (Iterative Dichotomiser 3) algorithm utilizes information gain as a key 
 
 First we used party package Then we classified the dataset for training the classification tree and the rest will be for testing so we set seed to give some arbitrary seed values so we can replicate it as long as we have the same seed so we won't have different results, then we set sample into two different groups. Each row will have either 1 or 2, 1 will be for training and 2 is for testing. Then we choose a set of columns that has implications for the classification and they are (NA_Sales +EU_Sales+Other_Sales+Genre+Platform) and the dependent variable is Global_Sales. Then by ctree we develop the tree and by the table it shows us how will the tree works then we visualized the data by plot(dataset_ctree) finally we create a confusionMatrix to provide us information to evaluate the performance of the notification mode.
 
+# Packages
+
+**party**: provides functions and algorithms for fitting and visualizing decision trees.
+
+**e1071:** provides various functions and algorithms for data mining, classification.
+
+**caret:** It provides a unified interface and a set of functions for training and evaluating machine learning models.
+
+# Mehtods
+
+**set.seed():**This sets the seed for the random number generator, ensuring reproducibility in random processes.
+
+**sample():**allows you to take a random sample of elements from a dataset or a vector, either with or without replacement.
+
+**ctree():**takes a formula and a dataset as input and builds a conditional inference tree based on the provided data. The formula specifies the relationship between the response variable and the predictor variables.
+
+**predict():** predicts the class labels of the test data.
+
+**confusionMatrix():**display the confusion matrix for evaluating the performance of a classification model.
+
 # ID3 alogrithm:90% taining set, 10% testing set
 
 ```{r}
@@ -1041,6 +1061,20 @@ the best split:90% training set, 10% testing. From the result above we can see t
 
 Clustering is a technique used to group similar data points together based on their inherent characteristics or similarities. So our goal of clustering is to identify patterns, structures, or relationships within a dataset without any prior knowledge of the groups or classes that may exist.
 
+### Packages:
+
+-   **factoextra**: Enhances clustering analysis with visualization techniques.
+-   **cluster**: Provides a suite of functions for cluster analysis.
+
+### Methods:
+
+-   **as.numeric()**: Converts data to numeric type.
+-   **fviz_nbclust()**: Visualizes the optimal number of clusters.
+-   **kmeans()**: Performs K-means clustering.
+-   **silhouette()**: Computes silhouette information of clustering.
+-   **fviz_silhouette()**: Visualizes silhouette analysis of clustering.
+-   **bcubed()**: Calculates BCubed clustering evaluation metrics. -**fviz_cluster()**: An factoextra package function that plots K-means cluster assignments in different colors for easy interpretation.
+
 # 1:Preprossening before clustring
 
 before starting the clustring process we need to remove the class label since clustring is an unsupervised learning , but before removing the class label We stored it in a varible just in case of further need(We need it to compute Bcubed precision and recall),Then we need to transform each factor coulnm to numeric because it's essential to convert factor variables to numeric ones due to the algorithmic requirements of clustring(Kmeans) and the characteristics of factor variables.
@@ -1373,38 +1407,29 @@ Overall, the plots suggest that dividing the data into 3 clusters rather than 4 
 
 # Evaluation and Comparison:
 
-
-
 # Classification:
-|                  |  90% training set 10% testing set|                  |                  | 80% training set 20% testing set|                  |                  | 70% training set 30% testing set|                  |                  |
-|:-----------------|----:|----:|----:|----:|----:|----:|----:|----:|----:|
-|                |IG|IG ratio|Gini index |IG|IG ratio|Gini index |IG|IG ratio|Gini index|
-|Accuracy        | 73.12228|73.30850|73.45794| 72.92683|73.59756|73.38735|72.69388|73.16327|73.98712|
-|Precision       | 42.34900|42.44236|42.93507| 42.52042|42.72077|42.34424|42.35181|42.78924|42.80148|
-|Sensitivity     | 73.32000|73.33000|73.45784|  73.27000|73.53667|88.06418|73.52000|73.30333|52.91624|
-|Specificity     | 86.51333|86.51667|86.67918| 86.64667|86.78333|42.49262|86.71667|86.61667|50.00985|
 
-First we used the above partitioning for the training set/testing set;An evaluation of a model’s based on one dataset may not be accurate. Different sets of training and test data help to obtain a more sound evaluation of the model.
-# IG
-The best split is:70% training,30% test.
-The accuracy measurement is not always enough to determine the best split of dataset to create the model.
-starting with the highest accuracy(90%training,10% test)-(73.12%)we can see that the sensitivity is very close to the accuracy so it’s balanced and we might consider it good choice for the model, Then we have (70% training,30% test) It has a Precision=42.4% which means our model correctly predict more than 43% out of all the predictions made, but it has the least accuracy percentage (72.69%) so it’s not the best option.Lastly (80% training,20% test) precision=42.5% and it also has the highest Precision among other split and high accuracy (72.92%) so it’s might be a good choice for the model.
-But in the end,considering the information at the table, we can conclude that the 70% training set and 30% testing set is the best option, as it exhibits a higher level of specificity/sensitivity compared to the 80% training and 20% testing split
+|             | 90% training set 10% testing set |          |            | 80% training set 20% testing set |          |            | 70% training set 30% testing set |          |            |
+|:---------|------:|------:|------:|------:|------:|------:|------:|------:|------:|
+|             |                               IG | IG ratio | Gini index |                               IG | IG ratio | Gini index |                               IG | IG ratio | Gini index |
+| Accuracy    |                         73.12228 | 73.30850 |   73.45794 |                         72.92683 | 73.59756 |   73.38735 |                         72.69388 | 73.16327 |   73.98712 |
+| Precision   |                         42.34900 | 42.44236 |   42.93507 |                         42.52042 | 42.72077 |   42.34424 |                         42.35181 | 42.78924 |   42.80148 |
+| Sensitivity |                         73.32000 | 73.33000 |   73.45784 |                         73.27000 | 73.53667 |   88.06418 |                         73.52000 | 73.30333 |   52.91624 |
+| Specificity |                         86.51333 | 86.51667 |   86.67918 |                         86.64667 | 86.78333 |   42.49262 |                         86.71667 | 86.61667 |   50.00985 |
+
+First we used the above partitioning for the training set/testing set;An evaluation of a model's based on one dataset may not be accurate. Different sets of training and test data help to obtain a more sound evaluation of the model. \# IG The best split is:70% training,30% test. The accuracy measurement is not always enough to determine the best split of dataset to create the model. starting with the highest accuracy(90%training,10% test)-(73.12%)we can see that the sensitivity is very close to the accuracy so it's balanced and we might consider it good choice for the model, Then we have (70% training,30% test) It has a Precision=42.4% which means our model correctly predict more than 43% out of all the predictions made, but it has the least accuracy percentage (72.69%) so it's not the best option.Lastly (80% training,20% test) precision=42.5% and it also has the highest Precision among other split and high accuracy (72.92%) so it's might be a good choice for the model. But in the end,considering the information at the table, we can conclude that the 70% training set and 30% testing set is the best option, as it exhibits a higher level of specificity/sensitivity compared to the 80% training and 20% testing split
 
 # IG ratio
-The best split is:80% training,20% test.
-We can clearly see that results are very close to the information gain results. The split that had the highest accuracy is (80% training,20% test) and also had the highest sensitivity/specificity among all(73.54%, and 86.78% respectively) the split  which make it balanced and a good choice for the model.At the same time (70% training,30% test) split had the lowest accuracy(73.16%) it also had less sensitivity/specificity result which is (73.3%, and 86.62 respectively) So it’s the least split option to go for the model. Lastly (90% training,10% test) It has a lower accuracy (73.31%) and Precision(42.4%), as well as a lower sensitivity/specificity(73.33%, and 86.52% respectively) So it’s doesn't make a good choice.
+
+The best split is:80% training,20% test. We can clearly see that results are very close to the information gain results. The split that had the highest accuracy is (80% training,20% test) and also had the highest sensitivity/specificity among all(73.54%, and 86.78% respectively) the split which make it balanced and a good choice for the model.At the same time (70% training,30% test) split had the lowest accuracy(73.16%) it also had less sensitivity/specificity result which is (73.3%, and 86.62 respectively) So it's the least split option to go for the model. Lastly (90% training,10% test) It has a lower accuracy (73.31%) and Precision(42.4%), as well as a lower sensitivity/specificity(73.33%, and 86.52% respectively) So it's doesn't make a good choice.
 
 # Gini index
-the best split:90% training set, 10% testing.
-From the result above we can see that the 70% training set, 30% testing set gave the best accuracy but we don’t only judge the accuracy, because if we do that we may use an imbalanced set, let’s compare the sensitivity/specificity too, we can notice that the sensitivity of the 70% training set,30% testing set is pretty low(53%) so it has imbalance issues so even if the accuracy is high we won’t consider it as the best model. We will see the results of the second best accuracy set which is:90% training set, 10% testing set, the sensitivity/specificity is pretty high(73.5%, and 87% respectively) we will compare it to 80% and 20% who has sensitivity/specificity of(88%, and 42.5% respectively), since the 90% training set, 10% testing set has the best specificity between the two we will consider it as the best training/testing set.
+
+the best split:90% training set, 10% testing. From the result above we can see that the 70% training set, 30% testing set gave the best accuracy but we don't only judge the accuracy, because if we do that we may use an imbalanced set, let's compare the sensitivity/specificity too, we can notice that the sensitivity of the 70% training set,30% testing set is pretty low(53%) so it has imbalance issues so even if the accuracy is high we won't consider it as the best model. We will see the results of the second best accuracy set which is:90% training set, 10% testing set, the sensitivity/specificity is pretty high(73.5%, and 87% respectively) we will compare it to 80% and 20% who has sensitivity/specificity of(88%, and 42.5% respectively), since the 90% training set, 10% testing set has the best specificity between the two we will consider it as the best training/testing set.
 
 # Best one among all the algorithims
-From our previous comparison we got the 3 best sets which are: 
-IG:70% training set,30 testing set (72.69% acc, 42.35% prec, 73.52% sens, 86.72% spec)
-IG ratio:80% training,20% test. (73.6% acc, 42.72% prec, 73.54% sens, 86.78% spec)
-Gin index:90% training set, 10% testing. (73.46% acc, 42.94% prec, 73.46% sens, 86.68% spec)
-From the result displayed in the table the IG ratio displayed the best result in accuracy/sensitivity/specificity so it;s the best set among all the algorithms.
+
+From our previous comparison we got the 3 best sets which are: IG:70% training set,30 testing set (72.69% acc, 42.35% prec, 73.52% sens, 86.72% spec) IG ratio:80% training,20% test. (73.6% acc, 42.72% prec, 73.54% sens, 86.78% spec) Gin index:90% training set, 10% testing. (73.46% acc, 42.94% prec, 73.46% sens, 86.68% spec) From the result displayed in the table the IG ratio displayed the best result in accuracy/sensitivity/specificity so it;s the best set among all the algorithms.
 
 # Clustring:
 
@@ -1437,49 +1462,42 @@ In contrast, k=3 offers a more balanced approach. It provides a reasonable avera
 
 # Findings:
 
-
 Before we began to use classification and clustering techniques, we had to understand our dataset using graphs and statistical measures, and after understanding it, we had to ensure our data was clean, so that our classification and clustering results would be as accurate as possible.
 
 **In the classification technique,** we decided on our split criteria, which were percentage splits, we selected three splits: (90% percent training, 20% percent testing), (80% percent training, 20% testing), (70% training, 30% testing), which were applied to ID3(IG), C5.0(IG ratio), and Cart(Gini index) algorithms. After extracting the 9 trees we compared them based on:Accuracy,Specificity,Sensitivity,Precision, , accuracy, and extracted the best split in the best algorithm which is:C5.0 (80% training set, 20% testing set).Accuracy reflects the general correctness of a classification model. -73.6%-Sensitivity evaluates the model's proficiency in correctly identifying positive instances-73.54%-. Specificity measures the model's accuracy in recognizing negative instances-86.78%-. Precision quantifies the accuracy of a model's positive predictions-42.35%-.
 
 **In the clustering analysis,** the Elbow method and average silhouette were used to determine the optimal number of clusters, leading to the consideration of k=3, k=4, and k=6. k=3 was identified as the best choice based on its superior performance across several metrics. The silhouette widths indicated strong definition and separation among the clusters, particularly for Cluster1. The overall silhouette width for k=3 was 0.52, reflecting well-separated and cohesively grouped clusters. The Total Within-Cluster Sum of Square (WSS) was also higher for k=3, suggesting more spread out clusters, which could imply natural groupings in the data. Additionally, the BCubed metrics showed high recall but moderate precision for k=3, indicating effective grouping. These factors combined to make k=3 the optimal choice, providing a balance between cluster distinctiveness and accuracy.
 
-**After thoroughly evaluating classification and clustering methods based on the results of the evaluations and comparisons,** we found that classification is better suited for our main goal: predicting the popularity of games. Classification predicts a game's popularity by dividing it into three levels: low, medium, and high—based on the Global_Sales label—.
-This approach gives us a more understanding of a game's potential success—popularity—. On the other side, clustering, while having its benefits, faced challenges in defining popularity levels.
-The overlap and ambiguity among clusters make it unfit for predicting a game's popularity.
-By choosing classification, we narrow down our focus to identify popularity levels, creating a more reliable framework for predicting a game's success in terms of Global_Sales. This choice aligns with our main goal and.
-
+**After thoroughly evaluating classification and clustering methods based on the results of the evaluations and comparisons,** we found that classification is better suited for our main goal: predicting the popularity of games. Classification predicts a game's popularity by dividing it into three levels: low, medium, and high---based on the Global_Sales label---. This approach gives us a more understanding of a game's potential success---popularity---. On the other side, clustering, while having its benefits, faced challenges in defining popularity levels. The overlap and ambiguity among clusters make it unfit for predicting a game's popularity. By choosing classification, we narrow down our focus to identify popularity levels, creating a more reliable framework for predicting a game's success in terms of Global_Sales. This choice aligns with our main goal and.
 
 # 8.Reference
 
-[1] (No date) Introduction to R - github pages. Available at: https://methodenlehre.github.io/SGSCLM-R-course/index.html (Accessed: 30 November 2023). 
+[1] (No date) Introduction to R - github pages. Available at: <https://methodenlehre.github.io/SGSCLM-R-course/index.html> (Accessed: 30 November 2023).
 
-[2] Chan, P. (2008) R project tutorial: How to create and interpret a matrix scatter plot, YouTube. Available at: https://youtu.be/kkhdpB4dNg0?si=OQodRxZckv40DIUs (Accessed: 30 November 2023).
+[2] Chan, P. (2008) R project tutorial: How to create and interpret a matrix scatter plot, YouTube. Available at: <https://youtu.be/kkhdpB4dNg0?si=OQodRxZckv40DIUs> (Accessed: 30 November 2023).
 
+[3] Moore, J. (2020) Scatterplot Matrix explained, YouTube. Available at: <https://youtu.be/yVBj-D7zjgY?si=AARc78sUJWohKHYT> (Accessed: 30 November 2023).
 
-[3] Moore, J. (2020) Scatterplot Matrix explained, YouTube. Available at: https://youtu.be/yVBj-D7zjgY?si=AARc78sUJWohKHYT (Accessed: 30 November 2023).
+[4] Scatter plot and Line of Best Fit (examples, videos, worksheets, solutions, activities) (no date) www.onlinemathlearning.com. Available at: <https://www.onlinemathlearning.com/scatter-plots.html> (Accessed: 30 November 2023).
 
-[4] Scatter plot and Line of Best Fit (examples, videos, worksheets, solutions, activities) (no date) www.onlinemathlearning.com. Available at: https://www.onlinemathlearning.com/scatter-plots.html (Accessed: 30 November 2023).
+[5] Zach (2021) How to normalize data in R, Statology. Available at: <https://www.statology.org/how-to-normalize-data-in-r/> (Accessed: 30 November 2023).
 
-[5] Zach (2021) How to normalize data in R, Statology. Available at: https://www.statology.org/how-to-normalize-data-in-r/ (Accessed: 30 November 2023).
+[6] EDAV fall 2021 Tues/Thurs Community contributions (no date) Chapter 77 Feature selection in r. Available at: <https://jtr13.github.io/cc21fall2/feature-selection-in-r.html> (Accessed: 30 November 2023).
 
-[6] EDAV fall 2021 Tues/Thurs Community contributions (no date) Chapter 77 Feature selection in r.  Available at: https://jtr13.github.io/cc21fall2/feature-selection-in-r.html (Accessed: 30 November 2023).
+[7] Discretize: Convert a continuous variable into a categorical variable (no date). RDocumentation. Available at: <https://www.rdocumentation.org/packages/arules/versions/1.7-6/topics/discretize> (Accessed: 30 November 2023).
 
-[7] Discretize: Convert a continuous variable into a categorical variable (no date). RDocumentation. Available at: https://www.rdocumentation.org/packages/arules/versions/1.7-6/topics/discretize (Accessed: 30 November 2023).
+[8] GROUPDATA2 (no date). RDocumentation. Available at: <https://www.rdocumentation.org/packages/groupdata2/versions/1.1.2> (Accessed: 30 November 2023).
 
-[8] GROUPDATA2 (no date). RDocumentation. Available at: https://www.rdocumentation.org/packages/groupdata2/versions/1.1.2 (Accessed: 30 November 2023).
+[9] V.Jawaharlal." (2014) RPubs - DecisionTree-Using Party Package,". rpubs. Available at: <https://rpubs.com/njvijay/148>. (Accessed: 30 November 2023).
 
-[9] V.Jawaharlal.” (2014) RPubs - DecisionTree-Using Party Package,”. rpubs. Available at:  https://rpubs.com/njvijay/148. (Accessed: 30 November 2023).
+[10] K.Mazidi. (no date) RPubs - Data Mining: Classification with Decision Trees. Rpubs. Available at: <https://rpubs.com/kjmazidi/195428>. (Accessed: 30 November 2023).
 
-[10] K.Mazidi.  (no date)  RPubs - Data Mining: Classification with Decision Trees. Rpubs. Available at: https://rpubs.com/kjmazidi/195428. (Accessed: 30 November 2023).
+[11] C.Guild. (2021) RPubs - Classification and Regression Trees (CART) in R. Rpubs. Available at: <https://rpubs.com/camguild/803096>. (Accessed: 30 November 2023).
 
-[11] C.Guild. (2021)  RPubs - Classification and Regression Trees (CART) in R. Rpubs. Available at: https://rpubs.com/camguild/803096. (Accessed: 30 November 2023).
+[12] Finnstats (2021) Cluster analysis in R: R-bloggers, R. Available at: <https://www.r-bloggers.com/2021/04/cluster-analysis-in-r/> (Accessed: 30 November 2023).
 
-[12] Finnstats (2021) Cluster analysis in R: R-bloggers, R. Available at: https://www.r-bloggers.com/2021/04/cluster-analysis-in-r/ (Accessed: 30 November 2023). 
+[13] Fonseca, L. (2019) Clustering analysis in R using K-means, Medium. Available at: <https://towardsdatascience.com/clustering-analysis-in-r-using-k-means-73eca4fb7967> (Accessed: 30 November 2023).
 
-[13] Fonseca, L. (2019) Clustering analysis in R using K-means, Medium. Available at: https://towardsdatascience.com/clustering-analysis-in-r-using-k-means-73eca4fb7967 (Accessed: 30 November 2023). 
+[14] Godfrey, K. et al. (2018) Determining the optimal number of clusters: 3 must know methods, Datanovia. Available at: <https://www.datanovia.com/en/lessons/determining-the-optimal-number-of-clusters-3-must-know-methods/> (Accessed: 30 November 2023).
 
-[14] Godfrey, K. et al. (2018) Determining the optimal number of clusters: 3 must know methods, Datanovia. Available at: https://www.datanovia.com/en/lessons/determining-the-optimal-number-of-clusters-3-must-know-methods/ (Accessed: 30 November 2023). 
-
-[15] K-means cluster analysis (no date) K-means Cluster Analysis · AFIT Data Science Lab R Programming Guide. Available at: https://afit-r.github.io/kmeans_clustering (Accessed: 30 November 2023).
-
+[15] K-means cluster analysis (no date) K-means Cluster Analysis · AFIT Data Science Lab R Programming Guide. Available at: <https://afit-r.github.io/kmeans_clustering> (Accessed: 30 November 2023).
